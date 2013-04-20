@@ -130,12 +130,12 @@
 (defun broker-request-dict (broker language)
   (error-if-not-active-broker broker)
   (assert (stringp language))
-  (let ((dict (cffi:foreign-funcall "enchant_broker_request_dict"
-                                    :pointer (address broker)
-                                    :string language
-                                    :pointer)))
-    (if (proper-pointer-p dict)
-        (make-instance 'dict :address dict)
+  (let ((ptr (cffi:foreign-funcall "enchant_broker_request_dict"
+                                   :pointer (address broker)
+                                   :string language
+                                   :pointer)))
+    (if (proper-pointer-p ptr)
+        (make-instance 'dict :address ptr)
         (error 'dict-not-found :string (format nil "Dictionary \"~A\" not found."
                                                language)))))
 
