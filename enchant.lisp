@@ -88,6 +88,17 @@
   (unless (and (brokerp object) (activep object))
     (error 'not-active-broker :string "Not an active BROKER object.")))
 
+(defun broker-dict-exists-p (broker language)
+  (error-if-not-active-broker broker)
+  (assert (stringp language))
+  (let ((value (cffi:foreign-funcall "enchant_broker_dict_exists"
+                                     :pointer (address broker)
+                                     :string language
+                                     :int)))
+    (case value
+      (0 nil)
+      (1 t))))
+
 (defmacro with-broker (variable &body body)
   (let ((broker (gensym "BROKER")))
     `(let* ((,broker (broker-init))
@@ -171,17 +182,6 @@
                                 :pointer (address dict)
                                 :pointer suggestions
                                 :void))))))
-
-(defun broker-dict-exists-p (broker language)
-  (error-if-not-active-broker broker)
-  (assert (stringp language))
-  (let ((value (cffi:foreign-funcall "enchant_broker_dict_exists"
-                                     :pointer (address broker)
-                                     :string language
-                                     :int)))
-    (case value
-      (0 nil)
-      (1 t))))
 
 (defmacro with-dict ((variable language) &body body)
   (let ((broker (gensym "BROKER"))
