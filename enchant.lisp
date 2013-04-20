@@ -19,7 +19,7 @@
 
            #:dict #:dictp #:not-active-dict #:dict-not-found
            #:broker-request-dict #:broker-free-dict #:dict-check
-           #:broker-dict-exists-p #:with-dict))
+           #:broker-dict-exists-p #:with-dict #:dict-suggest))
 
 (in-package #:enchant)
 
@@ -153,6 +153,24 @@
           ((minusp value) (error 'enchant-error
                                  :string (format nil "Error: ~A"
                                                  (dict-get-error dict)))))))
+
+(defun dict-suggest (dict word)
+  (error-if-not-active-dict dict)
+  (assert (stringp word))
+  (cffi:with-foreign-object (len :int)
+    (let ((suggestions (cffi:foreign-funcall "enchant_dict_suggest"
+                                             :pointer (address dict)
+                                             :string word
+                                             :int -1
+                                             :pointer len
+                                             :pointer)))
+      (when (proper-pointer-p suggestions)
+        (unwind-protect (loop :for i :upfrom 0 :below (cffi:mem-aref len :int)
+                              :collect (cffi:mem-aref suggestions :string i))
+          (cffi:foreign-funcall "enchant_dict_free_string_list"
+                                :pointer (address dict)
+                                :pointer suggestions
+                                :void))))))
 
 (defun broker-dict-exists-p (broker language)
   (error-if-not-active-broker broker)
