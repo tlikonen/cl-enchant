@@ -24,7 +24,7 @@
 (in-package #:enchant)
 
 (eval-when (:load-toplevel :execute)
-  (with-simple-restart (skip-libvoikko "Skip loading Enchant library.")
+  (with-simple-restart (skip-enchant "Skip loading Enchant library.")
     (cffi:load-foreign-library '(:default "libenchant"))))
 
 ;;; General
