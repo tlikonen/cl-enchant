@@ -148,7 +148,7 @@
                                      :string word
                                      :int -1 ;use strlen()
                                      :int)))
-    (cond ((zerop value) t)
+    (cond ((zerop value) word)
           ((plusp value) nil)
           ((minusp value) (error 'enchant-error
                                  :string (format nil "Error: ~A"
