@@ -1,9 +1,8 @@
 CL-Enchant
 ==========
 
-**Common Lisp interface for Enchant spell-checker library**
+**Common Lisp interface for Enchant spell-checker library** (incomplete)
 
-(Not complete yet)
 
 Introduction
 ------------
