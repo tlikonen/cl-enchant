@@ -12,7 +12,7 @@
 
 (defpackage #:enchant
   (:use #:cl)
-  (:export #:get-version #:broker-error
+  (:export #:get-version #:enchant-error
            
            #:broker #:brokerp #:broker-init #:not-active-broker
            #:broker-free #:with-broker
