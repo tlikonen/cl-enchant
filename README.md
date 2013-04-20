@@ -45,13 +45,31 @@ has been implemented. Some examples below.
 
 ### Macro: `(with-dict (variable language) &body ...)`
 
-    ENCHANT> (with-dict (english "en_GB")
-               (dict-check english "working"))
-    T
+Bind _variable_ the dictionary object for _language_ and run _body_
+forms.
 
-    ENCHANT> (with-dict (english "en_GB")
-               (dict-check english "wrking"))
+
+### Function: `(dict-check dict word)`
+
+Check the spelling for _word_ using dictionary _dict_.
+
+    ENCHANT> (with-dict (lang "en_GB")
+               (dict-check lang "working"))
+    "working"
+
+    ENCHANT> (with-dict (lang "en_GB")
+               (dict-check lang "wrking"))
     NIL
+
+
+### Function: `(dict-suggest dict word)`
+
+Get spelling suggestions for _word_ using dictionary _dict_.
+
+    ENCHANT> (with-dict (lang "en_US")
+               (dict-suggest lang "wrking"))
+    ("wring" "working" "irking" "waking" "wrying" "parking" "marking" "winking"
+     "wicking" "Zworykin" "dragging")
 
 
 Author and license
