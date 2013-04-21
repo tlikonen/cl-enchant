@@ -104,7 +104,7 @@ not, signal NOT-ACTIVE-DICT condition.
 
 ### Function: `(get-version)`
 
-Print Enchant library version.
+Return Enchant library version.
 
 
 ### Macro: `(with-broker variable &body body)`

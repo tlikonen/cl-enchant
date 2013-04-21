@@ -60,7 +60,7 @@
     object))
 
 (defun get-version ()
-  "Print Enchant library version."
+  "Return Enchant library version."
   (cffi:foreign-funcall "enchant_get_version" :string))
 
 ;;; Brokers
