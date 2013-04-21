@@ -19,32 +19,46 @@
                  (funcallstr "quicklisp-quickstart:install")))
           (delete-file init)))))
 
+(defun symbol-doc-type (symbol)
+  (let (docs)
+    (flet ((doc (symbol type key)
+             (push (list symbol key (documentation symbol type)) docs)))
+      (cond ((ignore-errors (macro-function symbol))
+             (doc symbol 'function :macro))
+            ((ignore-errors (symbol-function symbol))
+             (doc symbol 'function :function)))
+      (when (ignore-errors (symbol-value symbol))
+        (doc symbol 'variable :variable))
+      (cond ((subtypep symbol 'condition)
+             (doc symbol 'type :condition))
+            ((ignore-errors (find-class symbol))
+             (doc symbol 'type :class))))
+    docs))
+
 (defun print-doc (package &key (stream *standard-output*) (prefix "### "))
-  (loop :for symbol :in (sort (loop :for symbol
-                                    :being :each :external-symbol :in package
-                                    :collect symbol)
-                              #'string< :key #'symbol-name)
-        :for name := (symbol-name symbol)
-        :do (loop :for type :in '(function variable type)
-                  :for doc := (documentation symbol type)
-                  :if doc :do
-                  (format stream "~A" prefix)
-                  (case type
-                    (function
-                     (format stream "~A: `(~(~A~)"
-                             (if (macro-function symbol) "Macro" "Function")
-                             name)
-                     (let ((ll (sb-introspect:function-lambda-list symbol)))
-                       (when ll (format stream " ~{~(~A~)~^ ~}" ll)))
-                     (format stream ")`"))
-                    (variable (format stream "Variable: `~(~A~)`" name))
-                    (type (cond ((subtypep symbol 'condition)
-                                 (format stream "Condition"))
-                                ((ignore-errors (find-class symbol))
-                                 (format stream "Class"))
-                                (t (format stream "Type")))
-                          (format stream ": `~(~A~)`" name)))
-                  (format stream "~%~%~A~%~%~%" doc))))
+  (loop :with symbols := (sort (loop :for symbol
+                                     :being :each :external-symbol :in package
+                                     :collect symbol)
+                               #'string-lessp :key #'symbol-name)
+
+        :for (symbol type doc) :in (mapcan #'symbol-doc-type symbols)
+        :for name := (string-downcase (symbol-name symbol))
+        :if doc
+        :do
+        (format stream "~A" prefix)
+        (case type
+          (:function
+           (format stream "Function: `(~A~A)`" name
+                   (let ((ll (sb-introspect:function-lambda-list symbol)))
+                     (if ll (format nil " ~{~(~A~)~^ ~}" ll) ""))))
+          (:macro
+           (format stream "Macro: `(~A~A)`" name
+                   (let ((ll (sb-introspect:function-lambda-list symbol)))
+                     (if ll (format nil " ~{~(~A~)~^ ~}" ll) ""))))
+          (:variable (format stream "Variable: `~A`" name))
+          (:condition (format stream "Condition: `~A`" name))
+          (:class (format stream "Class: `~A`" name)))
+        (format stream "~%~%~A~%~%~%" doc)))
 
 
 (pushnew (make-pathname :directory (pathname-directory *load-pathname*))
