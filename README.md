@@ -43,10 +43,11 @@ has been implemented. Some examples below.
     "1.6.0"
 
 
-### Macro: `(with-dict (variable language) &body ...)`
+### Macro: `(with-dict (variable language &optional broker) &body ...)`
 
-Bind _variable_ the dictionary object for _language_ and run _body_
-forms.
+Bind _variable_ to the dictionary object for _language_ and run _body_
+forms. Reuse _broker_ if it is supplied, otherwise implicitly create a
+new broker (and release it in the end).
 
 
 ### Function: `(dict-check dict word)`
