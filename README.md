@@ -1,7 +1,9 @@
 CL-Enchant
 ==========
 
-**Common Lisp interface for Enchant spell-checker library** (incomplete)
+**Common Lisp interface for Enchant spell-checker library**
+
+(incomplete)
 
 
 Introduction
@@ -21,6 +23,8 @@ the following checkers:
   - Voikko (Finnish)
   - AppleSpell (Mac OSX)
 
+_CL-Enchant_ aim's to provide all or most of the Enchant's features.
+
 _CL-Enchant_ uses [The Common Foreign Function Interface][CFFI] (CFFI)
 for accessing the Enchant C library. It should work on any Common Lisp
 implementation which supports CFFI.
@@ -29,28 +33,8 @@ implementation which supports CFFI.
 [CFFI]:    http://common-lisp.net/project/cffi/
 
 
-Interface (API)
----------------
-
-_CL-Enchant_ aim's to provide all or most of the Enchant's features.
-Currently the project has just started and only the basic functionality
-has been implemented. Some examples below.
-
-
-### Function: `(get-version)`
-
-Return Enchant library's version.
-
-    ENCHANT> (get-version)
-    "1.6.0"
-
-
-### Macro: `(with-dict (variable language &optional broker) &body ...)`
-
-Bind _variable_ to the dictionary object for _language_ and run _body_
-forms. Reuse _broker_ if it is supplied, otherwise implicitly create a
-new broker (and release it in the end).
-
+Examples
+--------
 
 ### Function: `(dict-check dict word)`
 
@@ -73,6 +57,12 @@ Get spelling suggestions for _word_ using dictionary _dict_.
                (dict-suggest lang "wrking"))
     ("wring" "working" "irking" "waking" "wrying" "parking" "marking" "winking"
      "wicking" "Zworykin" "dragging")
+
+
+Interface (API)
+---------------
+
+Public symbols are documented in [api-doc.md](api-doc.md) file.
 
 
 Author and license
