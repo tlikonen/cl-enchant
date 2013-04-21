@@ -183,12 +183,19 @@
                                 :pointer suggestions
                                 :void))))))
 
-(defmacro with-dict ((variable language) &body body)
-  (let ((broker (gensym "BROKER"))
-        (dict (gensym "DICT")))
-    `(with-broker ,broker
-       (let* ((,dict (broker-request-dict ,broker ,language))
-              (,variable ,dict))
-         (declare (ignorable ,variable))
-         (unwind-protect (progn ,@body)
-           (broker-free-dict ,broker ,dict))))))
+(defmacro with-dict ((variable language &optional broker) &body body)
+  (let ((brokersym (gensym "BROKER"))
+        (dictsym (gensym "DICT")))
+    `(let ((,brokersym ,broker))
+       (if ,brokersym
+           (let* ((,dictsym (broker-request-dict ,brokersym ,language))
+                  (,variable ,dictsym))
+             (declare (ignorable ,variable))
+             (unwind-protect (progn ,@body)
+               (broker-free-dict ,brokersym ,dictsym)))
+           (with-broker ,brokersym
+             (let* ((,dictsym (broker-request-dict ,brokersym ,language))
+                    (,variable ,dictsym))
+               (declare (ignorable ,variable))
+               (unwind-protect (progn ,@body)
+                 (broker-free-dict ,brokersym ,dictsym))))))))
