@@ -23,11 +23,10 @@ the following checkers:
   - Voikko (Finnish)
   - AppleSpell (Mac OSX)
 
-_CL-Enchant_ aim's to provide all or most of the Enchant's features.
-
-_CL-Enchant_ uses [The Common Foreign Function Interface][CFFI] (CFFI)
-for accessing the Enchant C library. It should work on any Common Lisp
-implementation which supports CFFI.
+_CL-Enchant_ aim's to provide all or most of the Enchant's features. It
+uses [The Common Foreign Function Interface][CFFI] (CFFI) for accessing
+the Enchant C library. It should work on any Common Lisp implementation
+which supports CFFI.
 
 [Enchant]: http://www.abisource.com/projects/enchant/
 [CFFI]:    http://common-lisp.net/project/cffi/
@@ -62,7 +61,7 @@ Get spelling suggestions for _word_ using dictionary _dict_.
 Interface (API)
 ---------------
 
-Public symbols are documented in [api-doc.md](api-doc.md) file.
+Public symbols are documented in [api-doc](api-doc.md) file.
 
 
 Author and license
