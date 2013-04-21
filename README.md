@@ -61,7 +61,8 @@ Get spelling suggestions for _word_ using dictionary _dict_.
 Interface (API)
 ---------------
 
-Public symbols are documented in [api-doc](api-doc.md) file.
+The public programming interface is documented in the
+[api-doc](api-doc.md) file.
 
 
 Author and license
