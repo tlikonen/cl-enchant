@@ -67,4 +67,4 @@
 (with-output-to-string (*standard-output*)
   (ql:quickload "enchant"))
 
-(print-doc (nth 1 sb-ext:*posix-argv*))
+(print-doc "ENCHANT")
