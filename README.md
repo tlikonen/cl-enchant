@@ -39,6 +39,8 @@ has been implemented. Some examples below.
 
 ### Function: `(get-version)`
 
+Return Enchant library's version.
+
     ENCHANT> (get-version)
     "1.6.0"
 
@@ -55,11 +57,11 @@ new broker (and release it in the end).
 Check the spelling for _word_ using dictionary _dict_.
 
     ENCHANT> (with-dict (lang "en_GB")
-               (dict-check lang "working"))
+               (dict-check lang "working")) ; correct
     "working"
 
     ENCHANT> (with-dict (lang "en_GB")
-               (dict-check lang "wrking"))
+               (dict-check lang "wrking"))  ; incorrect
     NIL
 
 
