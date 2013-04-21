@@ -19,7 +19,7 @@
                  (funcallstr "quicklisp-quickstart:install")))
           (delete-file init)))))
 
-(defun print-doc (package &key (stream *standard-output*) (prefix "## "))
+(defun print-doc (package &key (stream *standard-output*) (prefix "### "))
   (loop :for symbol :in (sort (loop :for symbol
                                     :being :each :external-symbol :in package
                                     :collect symbol)

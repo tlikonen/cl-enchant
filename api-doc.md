@@ -2,18 +2,18 @@ The API documentation for CL-Enchant
 ====================================
 
 
-## Function: `(activep object)`
+### Function: `(activep object)`
 
 Test if OBJECT is active. Return generalized boolean.
 
 
-## Class: `broker`
+### Class: `broker`
 
 Class for holding pointers to foreign (non-Lisp) broker resources.
 Instances are created with BROKER-INIT function.
 
 
-## Function: `(broker-dict-exists-p broker language)`
+### Function: `(broker-dict-exists-p broker language)`
 
 Check if LANGUAGE exists. BROKER must be a valid BROKER object
 returned by BROKER-INIT. LANGUAGE is a language code and optional
@@ -25,14 +25,14 @@ If BROKER is not an active BROKER object signal NOT-ACTIVE-BROKER error
 condition.
 
 
-## Function: `(broker-free broker)`
+### Function: `(broker-free broker)`
 
 Free the foreign (non-Lisp) BROKER resources. The argument is a
 BROKER object returned by BROKER-INIT. The BROKER object becomes
 "inactive" and can't be used anymore.
 
 
-## Function: `(broker-free-dict broker dict)`
+### Function: `(broker-free-dict broker dict)`
 
 Free the foreign (non-Lisp) DICT resources. The first argument is a
 BROKER object returned by BROKER-INIT and the second a DICT object
@@ -40,7 +40,7 @@ returned by BROKER-REQUEST-DICT. The DICT object becomes "inactive"
 and can't be used anymore.
 
 
-## Function: `(broker-init)`
+### Function: `(broker-init)`
 
 Initialize a new broker. Return a BROKER object which can be used to
 request dictionares etc. See function BROKER-REQUEST-DICT.
@@ -55,7 +55,7 @@ See also macros WITH-BROKER and WITH-DICT which automatically initialize
 and free broker and dictionary resources.
 
 
-## Function: `(broker-request-dict broker language)`
+### Function: `(broker-request-dict broker language)`
 
 Request new dictionary for LANGUAGE. Return DICT object which can be
 used with spell-checker operations.
@@ -77,14 +77,14 @@ See also WITH-DICT macro which automatically creates a DICT
 environment and frees it in the end.
 
 
-## Class: `dict`
+### Class: `dict`
 
 Class for holding pointers to foreign (non-Lisp) dictionary
 resources. Instances are be created with BROKER-REQUEST-DICT
 function.
 
 
-## Function: `(dict-check dict word)`
+### Function: `(dict-check dict word)`
 
 Check the spelling of WORD (string) using dictionary DICT.
 Return WORD if the spelling is correct, NIL otherwise.
@@ -93,7 +93,7 @@ DICT must be an active DICT object returned by BROKER-REQUEST-DICT. If
 not, signal NOT-ACTIVE-DICT condition
 
 
-## Function: `(dict-suggest dict word)`
+### Function: `(dict-suggest dict word)`
 
 Request spelling suggestions for WORD (string) using dictionary DICT.
 Return a list of suggestions (strings) or nil if there aren't any.
@@ -102,12 +102,12 @@ DICT must be an active DICT object returned by BROKER-REQUEST-DICT. If
 not, signal NOT-ACTIVE-DICT condition.
 
 
-## Function: `(get-version)`
+### Function: `(get-version)`
 
 Print Enchant library version.
 
 
-## Macro: `(with-broker variable &body body)`
+### Macro: `(with-broker variable &body body)`
 
 Initialize a new broker (using BROKER-INIT) and bind VARIABLE to the
 BROKER object. Execute all BODY forms and return the values of the last
@@ -115,7 +115,7 @@ BODY form. Finally, free the BROKER resources with function
 BROKER-FREE.
 
 
-## Macro: `(with-dict (variable language &optional broker) &body body)`
+### Macro: `(with-dict (variable language &optional broker) &body body)`
 
 Request a new dictionary object for LANGUAGE. Bind VARIABLE to the
 new DICT object and execute all BODY forms. Return the values of the
