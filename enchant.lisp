@@ -13,11 +13,11 @@
 (defpackage #:enchant
   (:use #:cl)
   (:export #:get-version #:enchant-error
-           
-           #:broker #:brokerp #:broker-init #:not-active-broker
+
+           #:broker #:broker-init #:not-active-broker
            #:broker-free #:with-broker
 
-           #:dict #:dictp #:not-active-dict #:dict-not-found
+           #:dict #:not-active-dict #:dict-not-found
            #:broker-request-dict #:broker-free-dict #:dict-check
            #:broker-dict-exists-p #:with-dict #:dict-suggest))
 
@@ -85,7 +85,8 @@
   (free-foreign-resource broker))
 
 (defun error-if-not-active-broker (object)
-  (unless (and (brokerp object) (activep object))
+  (unless (and (typep object 'broker)
+               (activep object))
     (error 'not-active-broker :string "Not an active BROKER object.")))
 
 (defun broker-dict-exists-p (broker language)
@@ -118,7 +119,7 @@
 (define-condition dict-not-found (enchant-error) nil)
 
 (defun error-if-not-active-dict (object)
-  (unless (and (dictp object) (activep object))
+  (unless (and (typep object 'dict) (activep object))
     (error 'not-active-dict :string "Not an active DICT object.")))
 
 (defun dict-get-error (dict)
@@ -143,8 +144,10 @@
   nil)
 
 (defun broker-free-dict (broker dict)
-  (when (and (brokerp broker) (activep broker) 
-             (dictp dict) (activep dict))
+  (when (and (typep broker 'broker)
+             (activep broker)
+             (typep dict 'dict)
+             (activep dict))
     (cffi:foreign-funcall "enchant_broker_free_dict"
                           :pointer (address broker)
                           :pointer (address dict)
