@@ -36,6 +36,9 @@
     docs))
 
 (defun print-doc (package &key (stream *standard-output*) (prefix "### "))
+  (format stream "The API documentation for CL-Enchant~@
+                  ====================================~%~%~%")
+
   (loop :with symbols := (sort (loop :for symbol
                                      :being :each :external-symbol :in package
                                      :collect symbol)
