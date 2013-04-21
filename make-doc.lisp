@@ -38,9 +38,12 @@
                        (when ll (format stream " ~{~(~A~)~^ ~}" ll)))
                      (format stream ")`"))
                     (variable (format stream "Variable: `~(~A~)`" name))
-                    (type (if (ignore-errors (find-class symbol))
-                              (format stream "Class: `~(~A~)`" name)
-                              (format stream "Type: `~(~A~)`" name))))
+                    (type (cond ((subtypep symbol 'condition)
+                                 (format stream "Condition"))
+                                ((ignore-errors (find-class symbol))
+                                 (format stream "Class"))
+                                (t (format stream "Type")))
+                          (format stream ": `~(~A~)`" name)))
                   (format stream "~%~%~A~%~%~%" doc))))
 
 
