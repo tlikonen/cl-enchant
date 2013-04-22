@@ -1,6 +1,4 @@
-;;;; Enchant
-;;
-;; Enchant library bindings for Common Lisp
+;;;; Enchant -- Enchant library bindings for Common Lisp
 ;;
 ;; Author: Teemu Likonen <tlikonen@iki.fi>
 ;;
