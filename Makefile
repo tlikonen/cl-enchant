@@ -11,6 +11,6 @@ $(DOC).html: $(DOC).md
 	markdown $< >$@
 
 clean:
-	rm -f -- $(DOC).*
+	rm -f -- $(DOC).html
 
 .PHONY: clean
