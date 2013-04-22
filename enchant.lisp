@@ -260,9 +260,13 @@ last BODY form. Finally, free the DICT resources with function
 BROKER-FREE-DICT.
 
 If the optional BROKER argument is given reuse that broker object when
-requesting DICT. If the BROKER argument is not given (NIL) create
-implicitly a new BROKER object with BROKER-INIT and free it in the end
-with BROKER-FREE.
+requesting DICT. If the BROKER argument is not given create implicitly a
+new BROKER object with BROKER-INIT and free it in the end with
+BROKER-FREE.
+
+Note that the decision about the broker argument is done at the
+macro-expansion time. If there is anything (except the symbol NIL) in
+the place of the BROKER argument that will be used as the broker.
 
 Examples:
 
