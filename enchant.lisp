@@ -75,14 +75,14 @@ Instances are created with BROKER-INIT function."))
   "Initialize a new broker. Return a BROKER object which can be used to
 request dictionares etc. See function BROKER-REQUEST-DICT.
 
-BROKER object is \"active\" when it has been succesfully created. It
+A BROKER object is \"active\" when it has been succesfully created. It
 allocates foreign (non-Lisp) resources and must be freed after use with
 function BROKER-FREE. After being freed it becomes \"inactive\" and thus
-unusable. Generic function ACTIVEP can be used to test if BROKER object
-is active or not.
+unusable. Generic function ACTIVEP can be used to test if a BROKER
+object is active or not.
 
-See also macros WITH-BROKER and WITH-DICT which automatically initialize
-and free broker and dictionary resources."
+See macros WITH-BROKER and WITH-DICT which automatically initialize and
+free broker and dictionary resources."
 
   (let ((broker (cffi:foreign-funcall "enchant_broker_init" :pointer)))
     (when (proper-pointer-p broker)
