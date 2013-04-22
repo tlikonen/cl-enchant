@@ -143,8 +143,7 @@ BROKER-FREE."
   nil
   (:documentation
    "Class for holding pointers to foreign (non-Lisp) dictionary
-resources. Instances are be created with BROKER-REQUEST-DICT
-function."))
+resources. Instances are created with BROKER-REQUEST-DICT function."))
 
 (define-condition not-active-dict (enchant-error) nil)
 (define-condition dict-not-found (enchant-error) nil)

@@ -80,8 +80,7 @@ environment and frees it in the end.
 ### Class: `dict`
 
 Class for holding pointers to foreign (non-Lisp) dictionary
-resources. Instances are be created with BROKER-REQUEST-DICT
-function.
+resources. Instances are created with BROKER-REQUEST-DICT function.
 
 
 ### Function: `(dict-check dict word)`
