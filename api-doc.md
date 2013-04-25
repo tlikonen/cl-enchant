@@ -57,14 +57,14 @@ free broker and dictionary resources.
 
 ### Function: `(broker-request-dict broker language)`
 
-Request new dictionary for LANGUAGE. Return DICT object which can be
-used with spell-checker operations.
+Request a new dictionary for LANGUAGE. Return a DICT object which can
+be used with spell-checker operations.
 
 The BROKER argument must be an active BROKER object created with
 BROKER-INIT. LANGUAGE is a language code and optional country code as a
 string (e.g., "fi", "en_GB").
 
-DICT object is "active" when it has been succesfully created. It
+A DICT object is "active" when it has been succesfully created. It
 allocates foreign (non-Lisp) resources and must be freed after use with
 function BROKER-FREE-DICT. After being freed it becomes "inactive" and
 thus unusable. Generic function ACTIVEP can be used to test if DICT
