@@ -1,3 +1,6 @@
+#-sbcl
+(error "This is only for SBCL.")
+
 (require :sb-posix)
 (require :sb-introspect)
 
