@@ -72,4 +72,6 @@
 (with-output-to-string (*standard-output*)
   (ql:quickload "enchant"))
 
-(print-doc "ENCHANT")
+(handler-case (print-doc "ENCHANT")
+  (error (c)
+    (format *error-output* "~A~%" c)))
