@@ -44,26 +44,25 @@
 
   (loop :with *package* := (find-package package)
         :with *print-pretty* := nil
+        :with *print-case* := :downcase
         :with symbols := (sort (loop :for symbol
                                      :being :each :external-symbol :in package
                                      :collect symbol)
                                #'string-lessp :key #'symbol-name)
 
         :for (symbol type doc) :in (mapcan #'symbol-doc-type symbols)
-        :for name := (string-downcase (symbol-name symbol))
-        :if doc
-        :do
+        :if doc :do
         (format stream "~A" prefix)
         (case type
           (:function
-           (format stream "Function: `~(~S~)`"
+           (format stream "Function: `~S`"
                    (cons symbol (sb-introspect:function-lambda-list symbol))))
           (:macro
-           (format stream "Macro: `~(~S~)`"
+           (format stream "Macro: `~S`"
                    (cons symbol (sb-introspect:function-lambda-list symbol))))
-          (:variable (format stream "Variable: `~A`" name))
-          (:condition (format stream "Condition: `~A`" name))
-          (:class (format stream "Class: `~A`" name)))
+          (:variable (format stream "Variable: `~S`" symbol))
+          (:condition (format stream "Condition: `~S`" symbol))
+          (:class (format stream "Class: `~S`" symbol)))
         (format stream "~%~%~A~%~%~%" doc)))
 
 
