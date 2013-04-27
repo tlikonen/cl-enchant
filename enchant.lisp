@@ -22,7 +22,7 @@
 (in-package #:enchant)
 
 (eval-when (:load-toplevel :execute)
-  (with-simple-restart (skip-enchant "Skip loading Enchant library.")
+  (with-simple-restart (skip-enchant "Skip loading the Enchant library.")
     (cffi:load-foreign-library '(:default "libenchant"))))
 
 ;;; General
@@ -40,7 +40,8 @@
        (not (cffi:null-pointer-p object))))
 
 (defgeneric activep (object)
-  (:documentation "Test if OBJECT is active. Return generalized boolean."))
+  (:documentation "Test if _object_ is active. Return a generalized
+boolean."))
 
 (defmethod activep ((object foreign-object))
   (proper-pointer-p (address object)))
@@ -58,7 +59,7 @@
     object))
 
 (defun get-version ()
-  "Return Enchant library version."
+  "Return the Enchant library version."
   (cffi:foreign-funcall "enchant_get_version" :string))
 
 ;;; Brokers
@@ -67,22 +68,22 @@
   nil
   (:documentation
    "Class for holding pointers to foreign (non-Lisp) broker resources.
-Instances are created with BROKER-INIT function."))
+Instances are created with `broker-init` function."))
 
 (define-condition not-active-broker (enchant-error) nil)
 
 (defun broker-init ()
-  "Initialize a new broker. Return a BROKER object which can be used to
-request dictionares etc. See function BROKER-REQUEST-DICT.
+  "Initialize a new broker. Return a `broker` object which can be used
+to request dictionares etc. See function `broker-request-dict`.
 
-A BROKER object is \"active\" when it has been succesfully created. It
+A `broker` object is \"active\" when it has been succesfully created. It
 allocates foreign (non-Lisp) resources and must be freed after use with
-function BROKER-FREE. After being freed it becomes \"inactive\" and thus
-unusable. Generic function ACTIVEP can be used to test if a BROKER
-object is active or not.
+function `broker-free`. After being freed it becomes \"inactive\" and
+thus unusable. Generic function `activep` can be used to test if a
+`broker` object is active or not.
 
-See macros WITH-BROKER and WITH-DICT which automatically initialize and
-free broker and dictionary resources."
+See macros `with-broker` and `with-dict` which automatically initialize
+and free broker and dictionary resources."
 
   (let ((broker (cffi:foreign-funcall "enchant_broker_init" :pointer)))
     (when (proper-pointer-p broker)
@@ -94,8 +95,8 @@ free broker and dictionary resources."
                           :void)))
 
 (defun broker-free (broker)
-  "Free the foreign (non-Lisp) BROKER resources. The argument is a
-BROKER object returned by BROKER-INIT. The BROKER object becomes
+  "Free the foreign (non-Lisp) `broker` resources. The argument is a
+`broker` object returned by `broker-init`. The `broker` object becomes
 \"inactive\" and can't be used anymore."
     (free-foreign-resource broker))
 
@@ -105,14 +106,15 @@ BROKER object returned by BROKER-INIT. The BROKER object becomes
     (error 'not-active-broker :string "Not an active BROKER object.")))
 
 (defun broker-dict-exists-p (broker language)
-  "Check if LANGUAGE exists. BROKER must be a valid BROKER object
-returned by BROKER-INIT. LANGUAGE is a language code and optional
+  "Check if _language_ exists. _Broker_ must be a valid `broker` object
+returned by `broker-init`. _Language_ is a language code and optional
 country code as a string (e.g., \"fi\", \"en_GB\").
 
-If the LANGUAGE exists return the LANGUAGE string. Otherwise return NIL.
+If the _language_ exists return the _language_ string. Otherwise return
+`nil`.
 
-If BROKER is not an active BROKER object signal NOT-ACTIVE-BROKER error
-condition."
+If _broker_ is not an active `broker` object signal `not-active-broker`
+error condition."
 
   (error-if-not-active-broker broker)
   (assert (stringp language))
@@ -125,10 +127,10 @@ condition."
       (1 language))))
 
 (defmacro with-broker (variable &body body)
-  "Initialize a new broker (using BROKER-INIT) and bind VARIABLE to the
-BROKER object. Execute all BODY forms and return the values of the last
-BODY form. Finally, free the BROKER resources with function
-BROKER-FREE."
+  "Initialize a new `broker` (using `broker-init`) and bind _variable_
+to the `broker` object. Execute all _body_ forms and return the values
+of the last _body_ form. Finally, free the `broker` resources with
+function `broker-free`."
 
   (let ((broker (gensym "BROKER")))
     `(let* ((,broker (broker-init))
@@ -143,7 +145,7 @@ BROKER-FREE."
   nil
   (:documentation
    "Class for holding pointers to foreign (non-Lisp) dictionary
-resources. Instances are created with BROKER-REQUEST-DICT function."))
+resources. Instances are created with `broker-request-dict` function."))
 
 (define-condition not-active-dict (enchant-error) nil)
 (define-condition dict-not-found (enchant-error) nil)
@@ -160,23 +162,23 @@ resources. Instances are created with BROKER-REQUEST-DICT function."))
                         :string))
 
 (defun broker-request-dict (broker language)
-  "Request a new dictionary for LANGUAGE. Return a DICT object which can
-be used with spell-checker operations.
+  "Request a new dictionary for _language_. Return a `dict` object which
+can be used with spell-checker operations.
 
-The BROKER argument must be an active BROKER object created with
-BROKER-INIT. LANGUAGE is a language code and optional country code as a
-string (e.g., \"fi\", \"en_GB\").
+The _broker_ argument must be an active `broker` object created with
+`broker-init`. _Language_ is a language code and optional country code
+as a string (e.g., \"fi\", \"en_GB\").
 
-A DICT object is \"active\" when it has been succesfully created. It
+A `dict` object is \"active\" when it has been succesfully created. It
 allocates foreign (non-Lisp) resources and must be freed after use with
-function BROKER-FREE-DICT. After being freed it becomes \"inactive\" and
-thus unusable. Generic function ACTIVEP can be used to test if DICT
-object is active or not.
+function `broker-free-dict`. After being freed it becomes \"inactive\"
+and thus unusable. Generic function `activep` can be used to test if
+`dict` object is active or not.
 
-If no suitable dictionary could be found DICT-NOT-FOUND error condition
-is signalled.
+If no suitable dictionary could be found `dict-not-found` error
+condition is signalled.
 
-See also WITH-DICT macro which automatically creates a DICT
+See also `with-dict` macro which automatically creates a `dict`
 environment and frees it in the end."
 
   (error-if-not-active-broker broker)
@@ -194,10 +196,10 @@ environment and frees it in the end."
   nil)
 
 (defun broker-free-dict (broker dict)
-  "Free the foreign (non-Lisp) DICT resources. The first argument is a
-BROKER object returned by BROKER-INIT and the second a DICT object
-returned by BROKER-REQUEST-DICT. The DICT object becomes \"inactive\"
-and can't be used anymore."
+  "Free the foreign (non-Lisp) `dict` resources. The first argument is a
+`broker` object returned by `broker-init` and the second a `dict` object
+returned by `broker-request-dict`. The `dict` object becomes
+\"inactive\" and can't be used anymore."
 
   (when (and (typep broker 'broker)
              (activep broker)
@@ -210,11 +212,11 @@ and can't be used anymore."
     (free-foreign-resource dict)))
 
 (defun dict-check (dict word)
-  "Check the spelling of WORD (string) using dictionary DICT.
-Return WORD if the spelling is correct, NIL otherwise.
+  "Check the spelling of _word_ (string) using dictionary _dict_.
+Return _word_ if the spelling is correct, `nil` otherwise.
 
-DICT must be an active DICT object returned by BROKER-REQUEST-DICT. If
-not, signal NOT-ACTIVE-DICT condition"
+_Dict_ must be an active `dict` object returned by
+`broker-request-dict`, if not, signal a `not-active-dict` condition."
 
   (error-if-not-active-dict dict)
   (assert (stringp word))
@@ -230,11 +232,11 @@ not, signal NOT-ACTIVE-DICT condition"
                                                  (dict-get-error dict)))))))
 
 (defun dict-suggest (dict word)
-  "Request spelling suggestions for WORD (string) using dictionary DICT.
+  "Request spelling suggestions for _word_ (string) using dictionary _dict_.
 Return a list of suggestions (strings) or nil if there aren't any.
 
-DICT must be an active DICT object returned by BROKER-REQUEST-DICT. If
-not, signal NOT-ACTIVE-DICT condition."
+_Dict_ must be an active `dict` object returned by
+`broker-request-dict`, if not, signal `not-active-dict` condition."
 
   (error-if-not-active-dict dict)
   (assert (stringp word))
@@ -254,19 +256,19 @@ not, signal NOT-ACTIVE-DICT condition."
                                 :void))))))
 
 (defmacro with-dict ((variable language &optional broker) &body body)
-  "Request a new dictionary object for LANGUAGE. Bind VARIABLE to the
-new DICT object and execute all BODY forms. Return the values of the
-last BODY form. Finally, free the DICT resources with function
-BROKER-FREE-DICT.
+  "Request a new dictionary object for _language_. Bind _variable_ to
+the new `dict` object and execute all _body_ forms. Return the values of
+the last _body_ form. Finally, free the `dict` resources with function
+`broker-free-dict`.
 
-If the optional BROKER argument is given reuse that broker object when
-requesting DICT. If the BROKER argument is not given create implicitly a
-new BROKER object with BROKER-INIT and free it in the end with
-BROKER-FREE.
+If the optional _broker_ argument is given reuse that broker object when
+requesting DICT. If the _broker_ argument is not given create implicitly
+a new `broker` object with `broker-init` and free it in the end with
+`broker-free`.
 
-Note that the decision about the broker argument is done at the
-macro-expansion time. If there is anything (except the symbol NIL) in
-the place of the BROKER argument that will be used as the broker.
+Note that the decision about the _broker_ argument is done at the
+macro-expansion time. If there is anything (except the symbol `nil`) in
+the place of the _broker_ argument that will be used as the broker.
 
 Examples:
 
