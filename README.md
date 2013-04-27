@@ -1,4 +1,4 @@
-CL-Enchant
+CL Enchant
 ==========
 
 **Common Lisp interface for Enchant spell-checker library**
@@ -9,7 +9,7 @@ CL-Enchant
 Introduction
 ------------
 
-_CL-Enchant_ is a Common Lisp interface for the [Enchant][]
+_CL Enchant_ is a Common Lisp interface for the [Enchant][]
 spell-checker library. Enchant is a generic spell-checker library which
 uses other spell-checkers transparently as back-end. Enchant supports
 the following checkers:
@@ -23,7 +23,7 @@ the following checkers:
   - Voikko (Finnish)
   - AppleSpell (Mac OSX)
 
-_CL-Enchant_ aim's to provide all or most of the Enchant's features. It
+_CL Enchant_ aim's to provide all or most of the Enchant's features. It
 uses [The Common Foreign Function Interface][CFFI] (CFFI) for accessing
 the Enchant C library. It should work on any Common Lisp implementation
 which supports CFFI.

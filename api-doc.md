@@ -1,4 +1,4 @@
-The API documentation for CL-Enchant
+The API documentation for CL Enchant
 ====================================
 
 
