@@ -42,7 +42,9 @@
   (format stream "The API documentation for CL Enchant~@
                   ====================================~%~%~%")
 
-  (loop :with symbols := (sort (loop :for symbol
+  (loop :with *package* := (find-package package)
+        :with *print-pretty* := nil
+        :with symbols := (sort (loop :for symbol
                                      :being :each :external-symbol :in package
                                      :collect symbol)
                                #'string-lessp :key #'symbol-name)
@@ -54,13 +56,11 @@
         (format stream "~A" prefix)
         (case type
           (:function
-           (format stream "Function: `(~A~A)`" name
-                   (let ((ll (sb-introspect:function-lambda-list symbol)))
-                     (if ll (format nil " ~{~(~A~)~^ ~}" ll) ""))))
+           (format stream "Function: `~(~S~)`"
+                   (cons symbol (sb-introspect:function-lambda-list symbol))))
           (:macro
-           (format stream "Macro: `(~A~A)`" name
-                   (let ((ll (sb-introspect:function-lambda-list symbol)))
-                     (if ll (format nil " ~{~(~A~)~^ ~}" ll) ""))))
+           (format stream "Macro: `~(~S~)`"
+                   (cons symbol (sb-introspect:function-lambda-list symbol))))
           (:variable (format stream "Variable: `~A`" name))
           (:condition (format stream "Condition: `~A`" name))
           (:class (format stream "Class: `~A`" name)))
