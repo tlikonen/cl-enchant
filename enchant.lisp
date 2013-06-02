@@ -331,13 +331,13 @@ Examples:
         `(with-broker ,brokersym ,code))))
 
 (defmacro with-pwl-dict ((variable pwl &optional broker) &body body)
-    "Request a new dictionary object for personal wordlist file _pwl_ (a
-filename string). Bind _variable_ to the new `dict` object and execute
-all _body_ forms. Return the values of the last _body_ form. Finally,
-free the `dict` resources with function `broker-free-dict`.
+    "Request a new dictionary object for personal wordlist file _pwl_.
+Bind _variable_ to the new `dict` object and execute all _body_ forms.
+Return the values of the last _body_ form. Finally, free the `dict`
+resources with function `broker-free-dict`.
 
-Personal wordlist file _pwl_ is a text file with one entry (e.g., a
-word) per line. If the file does not exist it is created.
+For more information on personal wordlist files see the documentation of
+function `broker-request-pwl-dict`.
 
 If the optional _broker_ argument is given reuse that broker object when
 requesting `dict`. If the _broker_ argument is not given create
