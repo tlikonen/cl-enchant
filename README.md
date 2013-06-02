@@ -244,6 +244,19 @@ _Dict_ must be an active `dict` object returned by
 `broker-request-dict`, if not, signal a `not-active-dict` condition.
 
 
+### Function: `dict-describe`
+
+The lambda list:
+
+     (dict)
+
+Describe dictionary _dict_. Return a list of four strings: language
+tag, provider name, provider description and library filename.
+
+_Dict_ must be an active `dict` object returned by
+`broker-request-dict`, if not, signal a `not-active-dict` condition.
+
+
 ### Function: `dict-is-added-p`
 
 The lambda list:
@@ -385,7 +398,6 @@ Missing features
 
   - `enchant_broker_list_dicts()`
   - `enchant_broker_set_ordering()`
-  - `enchant_dict_describe()`
 
 
 Author and license

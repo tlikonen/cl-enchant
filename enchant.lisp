@@ -22,7 +22,7 @@
 
            #:dict-add #:dict-add-to-session #:dict-is-added-p
            #:dict-remove #:dict-remove-from-session #:dict-is-removed-p
-           #:dict-store-replacement))
+           #:dict-store-replacement #:dict-describe))
 
 (in-package #:enchant)
 
@@ -465,3 +465,25 @@ list."
                         :string word :int -1
                         :string correction :int -1
                         :void))
+
+(cffi:defcallback dict-describe-fn :void ((lang :string)
+                                          (name :string)
+                                          (desc :string)
+                                          (file :string))
+  (setf *callback-data* (list lang name desc file)))
+
+(defun dict-describe (dict)
+  "Describe dictionary _dict_. Return a list of four strings: language
+tag, provider name, provider description and library filename.
+
+_Dict_ must be an active `dict` object returned by
+`broker-request-dict`, if not, signal a `not-active-dict` condition."
+
+  (error-if-not-active-dict dict)
+  (let (*callback-data*)
+    (cffi:foreign-funcall "enchant_dict_describe"
+                          :pointer (address dict)
+                          :pointer (cffi:callback dict-describe-fn)
+                          :pointer (cffi:null-pointer)
+                          :void)
+    *callback-data*))

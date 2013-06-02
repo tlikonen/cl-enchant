@@ -122,7 +122,6 @@ Missing features
 
   - `enchant_broker_list_dicts()`
   - `enchant_broker_set_ordering()`
-  - `enchant_dict_describe()`
 
 
 Author and license
