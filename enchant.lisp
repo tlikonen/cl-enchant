@@ -74,6 +74,17 @@ boolean."))
 
 (defvar *callback-data*)
 
+(cffi:defcallback broker-describe-fn :void ((name :string)
+                                            (desc :string)
+                                            (file :string))
+  (push (list name desc file) *callback-data*))
+
+(cffi:defcallback dict-describe-fn :void ((lang :string)
+                                          (name :string)
+                                          (desc :string)
+                                          (file :string))
+  (push (list lang name desc file) *callback-data*))
+
 ;;; Brokers
 
 (defclass broker (foreign-object)
@@ -149,11 +160,6 @@ function `broker-free`."
        (declare (ignorable ,variable))
        (unwind-protect (progn ,@body)
          (broker-free ,broker)))))
-
-(cffi:defcallback broker-describe-fn :void ((name :string)
-                                            (desc :string)
-                                            (file :string))
-  (push (list name desc file) *callback-data*))
 
 (defun broker-describe (broker)
   "Get information about Enchant providers. Return a list of lists of
@@ -466,12 +472,6 @@ list."
                         :string correction :int -1
                         :void))
 
-(cffi:defcallback dict-describe-fn :void ((lang :string)
-                                          (name :string)
-                                          (desc :string)
-                                          (file :string))
-  (setf *callback-data* (list lang name desc file)))
-
 (defun dict-describe (dict)
   "Describe dictionary _dict_. Return a list of four strings: language
 tag, provider name, provider description and library filename.
@@ -486,4 +486,4 @@ _Dict_ must be an active `dict` object returned by
                           :pointer (cffi:callback dict-describe-fn)
                           :pointer (cffi:null-pointer)
                           :void)
-    *callback-data*))
+    (first *callback-data*)))
