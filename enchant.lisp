@@ -209,6 +209,8 @@ Return a `dict` object which can be used with spell-checker operations.
 The _broker_ argument must be an active `broker` object created with
 `broker-init`. Personal wordlist file _pwl_ is a text file with one
 entry (e.g., a word) per line. If the file does not exist it is created.
+New words can be added to the personal wordlist file with function
+`dict-add`.
 
 A `dict` object is \"active\" when it has been succesfully created. It
 allocates foreign (non-Lisp) resources and must be freed after use with
