@@ -108,10 +108,10 @@ Interface (API)
 Missing features
 ----------------
 
-  - `enchant_dict_describe()`
   - `enchant_broker_describe()`
   - `enchant_broker_list_dicts()`
   - `enchant_broker_set_ordering()`
+  - `enchant_dict_describe()`
 
 
 Author and license
