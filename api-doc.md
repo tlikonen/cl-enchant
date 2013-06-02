@@ -2,7 +2,11 @@ The API documentation for CL Enchant
 ====================================
 
 
-### Function: `(activep object)`
+### Function: `activep`
+
+The lambda list:
+
+     (object)
 
 Test if _object_ is active. Return a generalized
 boolean.
@@ -14,7 +18,11 @@ Class for holding pointers to foreign (non-Lisp) broker resources.
 Instances are created with `broker-init` function.
 
 
-### Function: `(broker-dict-exists-p broker language)`
+### Function: `broker-dict-exists-p`
+
+The lambda list:
+
+     (broker language)
 
 Check if _language_ exists. _Broker_ must be a valid `broker` object
 returned by `broker-init`. _Language_ is a language code and optional
@@ -27,14 +35,22 @@ If _broker_ is not an active `broker` object signal `not-active-broker`
 error condition.
 
 
-### Function: `(broker-free broker)`
+### Function: `broker-free`
+
+The lambda list:
+
+     (broker)
 
 Free the foreign (non-Lisp) `broker` resources. The argument is a
 `broker` object returned by `broker-init`. The `broker` object becomes
 "inactive" and can't be used anymore.
 
 
-### Function: `(broker-free-dict broker dict)`
+### Function: `broker-free-dict`
+
+The lambda list:
+
+     (broker dict)
 
 Free the foreign (non-Lisp) `dict` resources. The first argument is a
 `broker` object returned by `broker-init` and the second a `dict` object
@@ -42,7 +58,7 @@ returned by `broker-request-dict`. The `dict` object becomes
 "inactive" and can't be used anymore.
 
 
-### Function: `(broker-init)`
+### Function: `broker-init`
 
 Initialize a new broker. Return a `broker` object which can be used
 to request dictionares etc. See function `broker-request-dict`.
@@ -57,7 +73,11 @@ See macros `with-broker` and `with-dict` which automatically initialize
 and free broker and dictionary resources.
 
 
-### Function: `(broker-request-dict broker language)`
+### Function: `broker-request-dict`
+
+The lambda list:
+
+     (broker language)
 
 Request a new dictionary for _language_. Return a `dict` object which
 can be used with spell-checker operations.
@@ -85,7 +105,11 @@ Class for holding pointers to foreign (non-Lisp) dictionary
 resources. Instances are created with `broker-request-dict` function.
 
 
-### Function: `(dict-check dict word)`
+### Function: `dict-check`
+
+The lambda list:
+
+     (dict word)
 
 Check the spelling of _word_ (string) using dictionary _dict_.
 Return _word_ if the spelling is correct, `nil` otherwise.
@@ -94,7 +118,11 @@ _Dict_ must be an active `dict` object returned by
 `broker-request-dict`, if not, signal a `not-active-dict` condition.
 
 
-### Function: `(dict-suggest dict word)`
+### Function: `dict-suggest`
+
+The lambda list:
+
+     (dict word)
 
 Request spelling suggestions for _word_ (string) using dictionary _dict_.
 Return a list of suggestions (strings) or nil if there aren't any.
@@ -103,12 +131,16 @@ _Dict_ must be an active `dict` object returned by
 `broker-request-dict`, if not, signal `not-active-dict` condition.
 
 
-### Function: `(get-version)`
+### Function: `get-version`
 
 Return the Enchant library version.
 
 
-### Macro: `(with-broker variable &body body)`
+### Macro: `with-broker`
+
+The lambda list:
+
+     (variable &body body)
 
 Initialize a new `broker` (using `broker-init`) and bind _variable_
 to the `broker` object. Execute all _body_ forms and return the values
@@ -116,7 +148,11 @@ of the last _body_ form. Finally, free the `broker` resources with
 function `broker-free`.
 
 
-### Macro: `(with-dict (variable language &optional broker) &body body)`
+### Macro: `with-dict`
+
+The lambda list:
+
+     ((variable language &optional broker) &body body)
 
 Request a new dictionary object for _language_. Bind _variable_ to
 the new `dict` object and execute all _body_ forms. Return the values of

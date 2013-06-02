@@ -43,7 +43,7 @@
                   ====================================~%~%~%")
 
   (loop :with *package* := (find-package package)
-        :with *print-pretty* := nil
+        :with *print-right-margin* := 72
         :with *print-case* := :downcase
         :with symbols := (sort (loop :for symbol
                                      :being :each :external-symbol :in package
@@ -55,11 +55,15 @@
         (format stream "~A" prefix)
         (case type
           (:function
-           (format stream "Function: `~S`"
-                   (cons symbol (sb-introspect:function-lambda-list symbol))))
+           (format stream "Function: `~A`" symbol)
+           (let ((ll (sb-introspect:function-lambda-list symbol)))
+             (when ll
+               (format stream "~%~%The lambda list:~%~%     ~S" ll))))
           (:macro
-           (format stream "Macro: `~S`"
-                   (cons symbol (sb-introspect:function-lambda-list symbol))))
+           (format stream "Macro: `~A`" symbol)
+           (let ((ll (sb-introspect:function-lambda-list symbol)))
+             (when ll
+               (format stream "~%~%The lambda list:~%~%     ~S" ll))))
           (:variable (format stream "Variable: `~S`" symbol))
           (:condition (format stream "Condition: `~S`" symbol))
           (:class (format stream "Class: `~S`" symbol)))
