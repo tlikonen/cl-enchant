@@ -270,12 +270,12 @@ the last _body_ form. Finally, free the `dict` resources with function
 `broker-free-dict`.
 
 If the optional _broker_ argument is given reuse that broker object when
-requesting DICT. If the _broker_ argument is not given create implicitly
-a new `broker` object with `broker-init` and free it in the end with
-`broker-free`. Note that the decision about the _broker_ argument is
-done at the macro-expansion time. If there is anything (except the
-symbol `nil`) in the place of the _broker_ argument that will be used as
-the broker.
+requesting `dict`. If the _broker_ argument is not given create
+implicitly a new `broker` object with `broker-init` and free it in the
+end with `broker-free`. Note that the decision about the _broker_
+argument is done at the macro-expansion time. If there is
+anything (except the symbol `nil`) in the place of the _broker_ argument
+that will be used as the broker.
 
 Examples:
 
