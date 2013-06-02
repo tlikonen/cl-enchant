@@ -65,8 +65,8 @@ the following checkers:
 
 _CL Enchant_ aim's to provide all or most of the Enchant's features. It
 uses [The Common Foreign Function Interface][CFFI] (CFFI) for accessing
-the Enchant C library. It should work on any Common Lisp implementation
-which supports CFFI.
+the Enchant C library. CL Enchant should work on any Common Lisp
+implementation which supports CFFI.
 
 [Enchant]: http://www.abisource.com/projects/enchant/
 [CFFI]:    http://common-lisp.net/project/cffi/
@@ -100,6 +100,18 @@ Get spelling suggestions for _word_ using dictionary _dict_.
 
 Interface (API)
 ---------------
+
+_CL Enchant_ uses similar names as the original Enchant C library.
+Common Lisp's naming conventions are respected, though. For example, the
+original C language function `enchant_dict_check()` has been named
+`enchant:dict-check`. The C function `enchant_broker_dict_exists()` has
+been named `enchant:broker-dict-exists-p` and thus respecting the Common
+Lisp suffix convention for predicate functions.
+
+There are also macros for convenience: `with-broker`, `with-dict` and
+`with-pwl-dict`. They hide some low-level resource initialization and
+freeing operations.
+
 
 ")
 
