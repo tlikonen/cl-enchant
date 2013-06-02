@@ -27,6 +27,11 @@
 
 ;;; General
 
+(defun error-if-not-proper-string (object)
+  (assert (and (stringp object)
+               (plusp (length object)))
+          nil "The argument must be a non-empty string."))
+
 (define-condition enchant-error (error)
   ((error-string :initarg :string))
   (:report (lambda (condition stream)
@@ -117,14 +122,13 @@ If _broker_ is not an active `broker` object signal `not-active-broker`
 error condition."
 
   (error-if-not-active-broker broker)
-  (assert (stringp language))
-  (let ((value (cffi:foreign-funcall "enchant_broker_dict_exists"
-                                     :pointer (address broker)
-                                     :string language
-                                     :int)))
-    (case value
-      (0 nil)
-      (1 language))))
+  (error-if-not-proper-string language)
+  (case (cffi:foreign-funcall "enchant_broker_dict_exists"
+                              :pointer (address broker)
+                              :string language
+                              :int)
+    (0 nil)
+    (1 language)))
 
 (defmacro with-broker (variable &body body)
   "Initialize a new `broker` (using `broker-init`) and bind _variable_
@@ -182,7 +186,7 @@ See also `with-dict` macro which automatically creates a `dict`
 environment and frees it in the end."
 
   (error-if-not-active-broker broker)
-  (assert (stringp language))
+  (error-if-not-proper-string language)
   (let ((ptr (cffi:foreign-funcall "enchant_broker_request_dict"
                                    :pointer (address broker)
                                    :string language
@@ -219,7 +223,7 @@ _Dict_ must be an active `dict` object returned by
 `broker-request-dict`, if not, signal a `not-active-dict` condition."
 
   (error-if-not-active-dict dict)
-  (assert (stringp word))
+  (error-if-not-proper-string word)
   (let ((value (cffi:foreign-funcall "enchant_dict_check"
                                      :pointer (address dict)
                                      :string word
@@ -239,7 +243,7 @@ _Dict_ must be an active `dict` object returned by
 `broker-request-dict`, if not, signal `not-active-dict` condition."
 
   (error-if-not-active-dict dict)
-  (assert (stringp word))
+  (error-if-not-proper-string word)
   (cffi:with-foreign-object (len :int)
     (let ((suggestions (cffi:foreign-funcall "enchant_dict_suggest"
                                              :pointer (address dict)
