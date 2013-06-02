@@ -180,7 +180,7 @@ error condition."
 (defun broker-list-dicts (broker)
   "List all dictionaries that are available. Return a list of lists with
 four strings: language tag, provider name, provider description and
-library filename.
+provider library filename.
 
 If _broker_ is not an active `broker` object signal `not-active-broker`
 error condition."
@@ -491,7 +491,7 @@ list."
 
 (defun dict-describe (dict)
   "Describe dictionary _dict_. Return a list of four strings: language
-tag, provider name, provider description and library filename.
+tag, provider name, provider description and provider library filename.
 
 _Dict_ must be an active `dict` object returned by
 `broker-request-dict`, if not, signal a `not-active-dict` condition."
