@@ -156,6 +156,29 @@ See also `with-dict` macro which automatically creates a `dict`
 environment and frees it in the end.
 
 
+### Function: `broker-request-pwl-dict`
+
+The lambda list:
+
+     (broker pwl)
+
+Request a new dictionary for personal wordlist file _pwl_ (a filename string).
+Return a `dict` object which can be used with spell-checker operations.
+
+The _broker_ argument must be an active `broker` object created with
+`broker-init`. Personal wordlist file _pwl_ is a text file with one
+entry (e.g., a word) per line. If the file does not exist it is created.
+
+A `dict` object is "active" when it has been succesfully created. It
+allocates foreign (non-Lisp) resources and must be freed after use with
+function `broker-free-dict`. After being freed it becomes "inactive"
+and thus unusable. Generic function `activep` can be used to test if
+`dict` object is active or not.
+
+See also `with-pwl-dict` macro which automatically creates a `dict`
+environment and frees it in the end.
+
+
 ### Class: `dict`
 
 Class for holding pointers to foreign (non-Lisp) dictionary
@@ -307,11 +330,33 @@ Examples:
     ("omii" "Tomi" "toimi" "toimii" "Tomisi")
 
 
+### Macro: `with-pwl-dict`
+
+The lambda list:
+
+     ((variable pwl &optional broker) &body body)
+
+Request a new dictionary object for personal wordlist file _pwl_ (a
+filename string). Bind _variable_ to the new `dict` object and execute
+all _body_ forms. Return the values of the last _body_ form. Finally,
+free the `dict` resources with function `broker-free-dict`.
+
+Personal wordlist file _pwl_ is a text file with one entry (e.g., a
+word) per line. If the file does not exist it is created.
+
+If the optional _broker_ argument is given reuse that broker object when
+requesting `dict`. If the _broker_ argument is not given create
+implicitly a new `broker` object with `broker-init` and free it in the
+end with `broker-free`. Note that the decision about the _broker_
+argument is done at the macro-expansion time. If there is
+anything (except the symbol `nil`) in the place of the _broker_ argument
+that will be used as the broker.
+
+
 Missing features
 ----------------
 
   - `enchant_dict_describe()`
-  - `enchant_broker_request_pwl_dict()`
   - `enchant_broker_describe()`
   - `enchant_broker_list_dicts()`
   - `enchant_broker_set_ordering()`

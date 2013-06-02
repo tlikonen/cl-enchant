@@ -16,8 +16,9 @@
            #:broker-free #:with-broker
 
            #:dict #:not-active-dict #:dict-not-found
-           #:broker-request-dict #:broker-free-dict #:dict-check
-           #:broker-dict-exists-p #:with-dict #:dict-suggest
+           #:broker-request-dict #:broker-request-pwl-dict
+           #:broker-free-dict #:dict-check #:broker-dict-exists-p #:with-dict
+           #:with-pwl-dict #:dict-suggest
 
            #:dict-add #:dict-add-to-session #:dict-is-added-p
            #:dict-remove #:dict-remove-from-session #:dict-is-removed-p
@@ -200,6 +201,34 @@ environment and frees it in the end."
         (error 'dict-not-found :string (format nil "Dictionary \"~A\" not found."
                                                language)))))
 
+
+(defun broker-request-pwl-dict (broker pwl)
+  "Request a new dictionary for personal wordlist file _pwl_ (a filename string).
+Return a `dict` object which can be used with spell-checker operations.
+
+The _broker_ argument must be an active `broker` object created with
+`broker-init`. Personal wordlist file _pwl_ is a text file with one
+entry (e.g., a word) per line. If the file does not exist it is created.
+
+A `dict` object is \"active\" when it has been succesfully created. It
+allocates foreign (non-Lisp) resources and must be freed after use with
+function `broker-free-dict`. After being freed it becomes \"inactive\"
+and thus unusable. Generic function `activep` can be used to test if
+`dict` object is active or not.
+
+See also `with-pwl-dict` macro which automatically creates a `dict`
+environment and frees it in the end."
+
+  (error-if-not-active-broker broker)
+  (error-if-not-proper-string pwl)
+  (let ((ptr (cffi:foreign-funcall "enchant_broker_request_pwl_dict"
+                                   :pointer (address broker)
+                                   :string pwl
+                                   :pointer)))
+    (when (proper-pointer-p ptr)
+      (make-instance 'dict :address ptr))))
+
+
 (defmethod free-foreign-resource ((object dict))
   nil)
 
@@ -291,6 +320,34 @@ Examples:
   (let* ((brokersym (gensym "BROKER"))
          (dictsym (gensym "DICT"))
          (code `(let* ((,dictsym (broker-request-dict ,brokersym ,language))
+                       (,variable ,dictsym))
+                  (declare (ignorable ,variable))
+                  (unwind-protect (progn ,@body)
+                    (broker-free-dict ,brokersym ,dictsym)))))
+    (if broker
+        `(let ((,brokersym ,broker)) ,code)
+        `(with-broker ,brokersym ,code))))
+
+(defmacro with-pwl-dict ((variable pwl &optional broker) &body body)
+    "Request a new dictionary object for personal wordlist file _pwl_ (a
+filename string). Bind _variable_ to the new `dict` object and execute
+all _body_ forms. Return the values of the last _body_ form. Finally,
+free the `dict` resources with function `broker-free-dict`.
+
+Personal wordlist file _pwl_ is a text file with one entry (e.g., a
+word) per line. If the file does not exist it is created.
+
+If the optional _broker_ argument is given reuse that broker object when
+requesting `dict`. If the _broker_ argument is not given create
+implicitly a new `broker` object with `broker-init` and free it in the
+end with `broker-free`. Note that the decision about the _broker_
+argument is done at the macro-expansion time. If there is
+anything (except the symbol `nil`) in the place of the _broker_ argument
+that will be used as the broker."
+
+  (let* ((brokersym (gensym "BROKER"))
+         (dictsym (gensym "DICT"))
+         (code `(let* ((,dictsym (broker-request-pwl-dict ,brokersym ,pwl))
                        (,variable ,dictsym))
                   (declare (ignorable ,variable))
                   (unwind-protect (progn ,@body)
