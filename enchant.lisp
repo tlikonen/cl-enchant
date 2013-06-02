@@ -163,7 +163,8 @@ function `broker-free`."
 
 (defun broker-describe (broker)
   "Get information about Enchant providers. Return a list of lists of
-three strings: (name description file).
+three strings: provider name, provider description, provider library
+filename.
 
 If _broker_ is not an active `broker` object signal `not-active-broker`
 error condition."
