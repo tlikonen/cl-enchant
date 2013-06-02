@@ -410,7 +410,6 @@ that will be used as the broker.
 Missing features
 ----------------
 
-  - `enchant_broker_list_dicts()`
   - `enchant_broker_set_ordering()`
 
 
