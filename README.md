@@ -155,6 +155,20 @@ See macros `with-broker` and `with-dict` which automatically initialize
 and free broker and dictionary resources.
 
 
+### Function: `broker-list-dicts`
+
+The lambda list:
+
+     (broker)
+
+List all dictionaries that are available. Return a list of lists with
+four strings: language tag, provider name, provider description and
+library filename.
+
+If _broker_ is not an active `broker` object signal `not-active-broker`
+error condition.
+
+
 ### Function: `broker-request-dict`
 
 The lambda list:

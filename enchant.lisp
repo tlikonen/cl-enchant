@@ -13,7 +13,7 @@
   (:export #:get-version #:enchant-error #:activep
 
            #:broker #:broker-init #:not-active-broker
-           #:broker-free #:with-broker #:broker-describe
+           #:broker-free #:with-broker #:broker-describe #:broker-list-dicts
 
            #:dict #:not-active-dict #:dict-not-found
            #:broker-request-dict #:broker-request-pwl-dict
@@ -173,6 +173,23 @@ error condition."
     (cffi:foreign-funcall "enchant_broker_describe"
                           :pointer (address broker)
                           :pointer (cffi:callback broker-describe-fn)
+                          :pointer (cffi:null-pointer)
+                          :void)
+    (nreverse *callback-data*)))
+
+(defun broker-list-dicts (broker)
+  "List all dictionaries that are available. Return a list of lists with
+four strings: language tag, provider name, provider description and
+library filename.
+
+If _broker_ is not an active `broker` object signal `not-active-broker`
+error condition."
+
+  (error-if-not-active-broker broker)
+  (let (*callback-data*)
+    (cffi:foreign-funcall "enchant_broker_list_dicts"
+                          :pointer (address broker)
+                          :pointer (cffi:callback dict-describe-fn)
                           :pointer (cffi:null-pointer)
                           :void)
     (nreverse *callback-data*)))
