@@ -13,7 +13,7 @@
   (:export #:get-version #:enchant-error #:activep
 
            #:broker #:broker-init #:not-active-broker
-           #:broker-free #:with-broker
+           #:broker-free #:with-broker #:broker-describe
 
            #:dict #:not-active-dict #:dict-not-found
            #:broker-request-dict #:broker-request-pwl-dict
@@ -71,6 +71,8 @@ boolean."))
 (defun get-version ()
   "Return the Enchant library version."
   (cffi:foreign-funcall "enchant_get_version" :string))
+
+(defvar *callback-data*)
 
 ;;; Brokers
 
@@ -147,6 +149,27 @@ function `broker-free`."
        (declare (ignorable ,variable))
        (unwind-protect (progn ,@body)
          (broker-free ,broker)))))
+
+(cffi:defcallback broker-describe-fn :void ((name :string)
+                                            (desc :string)
+                                            (file :string))
+  (push (list name desc file) *callback-data*))
+
+(defun broker-describe (broker)
+  "Get information about Enchant providers. Return a list of lists of
+three strings: (name description file).
+
+If _broker_ is not an active `broker` object signal `not-active-broker`
+error condition."
+
+  (error-if-not-active-broker broker)
+  (let (*callback-data*)
+    (cffi:foreign-funcall "enchant_broker_describe"
+                          :pointer (address broker)
+                          :pointer (cffi:callback broker-describe-fn)
+                          :pointer (cffi:null-pointer)
+                          :void)
+    (nreverse *callback-data*)))
 
 ;;; Dicts
 

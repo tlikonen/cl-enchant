@@ -87,6 +87,19 @@ Class for holding pointers to foreign (non-Lisp) broker resources.
 Instances are created with `broker-init` function.
 
 
+### Function: `broker-describe`
+
+The lambda list:
+
+     (broker)
+
+Get information about Enchant providers. Return a list of lists of
+three strings: (name description file).
+
+If _broker_ is not an active `broker` object signal `not-active-broker`
+error condition.
+
+
 ### Function: `broker-dict-exists-p`
 
 The lambda list:
@@ -370,7 +383,6 @@ that will be used as the broker.
 Missing features
 ----------------
 
-  - `enchant_broker_describe()`
   - `enchant_broker_list_dicts()`
   - `enchant_broker_set_ordering()`
   - `enchant_dict_describe()`
