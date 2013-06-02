@@ -307,6 +307,16 @@ Examples:
     ("omii" "Tomi" "toimi" "toimii" "Tomisi")
 
 
+Missing features
+----------------
+
+  - `enchant_dict_describe()`
+  - `enchant_broker_request_pwl_dict()`
+  - `enchant_broker_describe()`
+  - `enchant_broker_list_dicts()`
+  - `enchant_broker_set_ordering()`
+
+
 Author and license
 ------------------
 
