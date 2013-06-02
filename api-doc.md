@@ -105,6 +105,25 @@ Class for holding pointers to foreign (non-Lisp) dictionary
 resources. Instances are created with `broker-request-dict` function.
 
 
+### Function: `dict-add`
+
+The lambda list:
+
+     (dict word)
+
+Add _word_ to user's personal dictionary _dict_. If the _word_ exists
+in the exclude dictionary, remove it first.
+
+
+### Function: `dict-add-to-session`
+
+The lambda list:
+
+     (dict word)
+
+Add _word_ to the current spell-checking session _dict_.
+
+
 ### Function: `dict-check`
 
 The lambda list:
@@ -116,6 +135,58 @@ Return _word_ if the spelling is correct, `nil` otherwise.
 
 _Dict_ must be an active `dict` object returned by
 `broker-request-dict`, if not, signal a `not-active-dict` condition.
+
+
+### Function: `dict-is-added-p`
+
+The lambda list:
+
+     (dict word)
+
+Return _word_ if the _word_ has been added to user's personal
+dictionary or to the current spell-checking session _dict_. Otherwise
+return `nil`.
+
+
+### Function: `dict-is-removed-p`
+
+The lambda list:
+
+     (dict word)
+
+Return _word_ if the _word_ has been removed from the user's personal
+dictionary or from the current spell-checking session _dict_. Otherwise
+return `nil`.
+
+
+### Function: `dict-remove`
+
+The lambda list:
+
+     (dict word)
+
+Add _word_ to the exclude dictionary for _dict_ and remove it from
+user's personal dictionary.
+
+
+### Function: `dict-remove-from-session`
+
+The lambda list:
+
+     (dict word)
+
+Remove _word_ from the current spell-checking session _dict_.
+
+
+### Function: `dict-store-replacement`
+
+The lambda list:
+
+     (dict word correction)
+
+Add a correction statement from misspelled _word_ to _correction_
+using dictionary _dict_. _Correction_ might show up in the suggestion
+list.
 
 
 ### Function: `dict-suggest`

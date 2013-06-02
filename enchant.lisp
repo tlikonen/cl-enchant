@@ -17,7 +17,11 @@
 
            #:dict #:not-active-dict #:dict-not-found
            #:broker-request-dict #:broker-free-dict #:dict-check
-           #:broker-dict-exists-p #:with-dict #:dict-suggest))
+           #:broker-dict-exists-p #:with-dict #:dict-suggest
+
+           #:dict-add #:dict-add-to-session #:dict-is-added-p
+           #:dict-remove #:dict-remove-from-session #:dict-is-removed-p
+           #:dict-store-replacement))
 
 (in-package #:enchant)
 
@@ -294,3 +298,88 @@ Examples:
     (if broker
         `(let ((,brokersym ,broker)) ,code)
         `(with-broker ,brokersym ,code))))
+
+
+(defun dict-add (dict word)
+  "Add _word_ to user's personal dictionary _dict_. If the _word_ exists
+in the exclude dictionary, remove it first."
+
+  (error-if-not-active-dict dict)
+  (error-if-not-proper-string word)
+  (cffi:foreign-funcall "enchant_dict_add"
+                        :pointer (address dict)
+                        :string word
+                        :int -1
+                        :void))
+
+(defun dict-add-to-session (dict word)
+  "Add _word_ to the current spell-checking session _dict_."
+  (error-if-not-active-dict dict)
+  (error-if-not-proper-string word)
+  (cffi:foreign-funcall "enchant_dict_add_to_session"
+                        :pointer (address dict)
+                        :string word
+                        :int -1
+                        :void))
+
+(defun dict-is-added-p (dict word)
+  "Return _word_ if the _word_ has been added to user's personal
+dictionary or to the current spell-checking session _dict_. Otherwise
+return `nil`."
+  (error-if-not-active-dict dict)
+  (error-if-not-proper-string word)
+  (case (cffi:foreign-funcall "enchant_dict_is_added"
+                              :pointer (address dict)
+                              :string word
+                              :int -1
+                              :int)
+    (1 word)
+    (0 nil)))
+
+(defun dict-remove (dict word)
+  "Add _word_ to the exclude dictionary for _dict_ and remove it from
+user's personal dictionary."
+  (error-if-not-active-dict dict)
+  (error-if-not-proper-string word)
+  (cffi:foreign-funcall "enchant_dict_remove"
+                        :pointer (address dict)
+                        :string word
+                        :int -1
+                        :void))
+
+(defun dict-remove-from-session (dict word)
+  "Remove _word_ from the current spell-checking session _dict_."
+  (error-if-not-active-dict dict)
+  (error-if-not-proper-string word)
+  (cffi:foreign-funcall "enchant_dict_remove_from_session"
+                        :pointer (address dict)
+                        :string word
+                        :int -1
+                        :void))
+
+(defun dict-is-removed-p (dict word)
+  "Return _word_ if the _word_ has been removed from the user's personal
+dictionary or from the current spell-checking session _dict_. Otherwise
+return `nil`."
+  (error-if-not-active-dict dict)
+  (error-if-not-proper-string word)
+  (case (cffi:foreign-funcall "enchant_dict_is_removed"
+                              :pointer (address dict)
+                              :string word
+                              :int -1
+                              :int)
+    (1 word)
+    (0 nil)))
+
+(defun dict-store-replacement (dict word correction)
+  "Add a correction statement from misspelled _word_ to _correction_
+using dictionary _dict_. _Correction_ might show up in the suggestion
+list."
+  (error-if-not-active-dict dict)
+  (error-if-not-proper-string word)
+  (error-if-not-proper-string correction)
+  (cffi:foreign-funcall "enchant_dict_store_replacement"
+                        :pointer (address dict)
+                        :string word :int -1
+                        :string correction :int -1
+                        :void))
