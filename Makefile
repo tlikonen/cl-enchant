@@ -1,6 +1,6 @@
 MAKE_DOC := make-doc.lisp
 SBCL := sbcl
-DOC := api-doc
+DOC := README
 
 $(DOC).md: enchant.lisp $(MAKE_DOC)
 	$(SBCL) --script $(MAKE_DOC) >$@
