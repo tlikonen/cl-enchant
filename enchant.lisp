@@ -12,7 +12,7 @@
   (:use #:cl)
   (:export #:get-version #:enchant-error #:activep
 
-           #:broker #:broker-init #:not-active-broker
+           #:broker #:broker-init #:not-active-broker #:broker-get-error
            #:broker-free #:with-broker #:broker-describe #:broker-list-dicts
 
            #:dict #:not-active-dict #:dict-not-found #:dict-get-error
@@ -195,6 +195,14 @@ error condition."
                           :pointer (cffi:null-pointer)
                           :void)
     (nreverse *callback-data*)))
+
+(defun broker-get-error (broker)
+  "Return an error message string (or `nil`) describing the last error
+in the UTF-8 encoding."
+  (error-if-not-active-broker broker)
+  (cffi:foreign-funcall "enchant_broker_get_error"
+                        :pointer (address broker)
+                        :string))
 
 ;;; Dicts
 

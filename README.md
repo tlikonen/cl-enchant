@@ -140,6 +140,16 @@ returned by `broker-request-dict`. The `dict` object becomes
 "inactive" and can't be used anymore.
 
 
+### Function: `broker-get-error`
+
+The lambda list:
+
+     (broker)
+
+Return an error message string (or `nil`) describing the last error
+in the UTF-8 encoding.
+
+
 ### Function: `broker-init`
 
 Initialize a new broker. Return a `broker` object which can be used
