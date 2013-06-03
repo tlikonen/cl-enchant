@@ -7,10 +7,10 @@ CL Enchant
 Introduction
 ------------
 
-_CL Enchant_ is a Common Lisp interface for the [Enchant][]
-spell-checker library. Enchant is a generic spell-checker library which
-uses other spell-checkers transparently as back-end. Enchant supports
-the following checkers:
+CL Enchant is a Common Lisp interface for the [Enchant][] spell-checker
+library. Enchant is a generic spell-checker library which uses other
+spell-checkers transparently as back-end. Enchant supports the following
+checkers:
 
   - Aspell/Pspell
   - Ispell
@@ -21,9 +21,9 @@ the following checkers:
   - Voikko (Finnish)
   - AppleSpell (Mac OSX)
 
-_CL Enchant_ uses [The Common Foreign Function Interface][CFFI] (CFFI)
-for accessing the Enchant C library. CL Enchant should work on any
-Common Lisp implementation which supports CFFI.
+CL Enchant uses [The Common Foreign Function Interface][CFFI] (CFFI) for
+accessing the Enchant C library. CL Enchant should work on any Common
+Lisp implementation which supports CFFI.
 
 [Enchant]: http://www.abisource.com/projects/enchant/
 [CFFI]:    http://common-lisp.net/project/cffi/
@@ -58,8 +58,8 @@ Get spelling suggestions for _word_ using dictionary _dict_.
 Interface (API)
 ---------------
 
-_CL Enchant_ uses similar names as the original Enchant C library.
-Common Lisp's naming conventions are respected, though. For example, the
+CL Enchant uses similar names as the original Enchant C library. Common
+Lisp's naming conventions are respected, though. For example, the
 original C language function `enchant_dict_check()` has been named
 `enchant:dict-check`. The C function `enchant_broker_dict_exists()` has
 been named `enchant:broker-dict-exists-p` and thus respecting the Common
