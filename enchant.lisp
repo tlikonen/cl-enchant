@@ -14,6 +14,7 @@
 
            #:broker #:broker-init #:not-active-broker #:broker-get-error
            #:broker-free #:with-broker #:broker-describe #:broker-list-dicts
+           #:broker-set-ordering
 
            #:dict #:not-active-dict #:dict-not-found #:dict-get-error
            #:broker-request-dict #:broker-request-pwl-dict
@@ -203,6 +204,28 @@ in the UTF-8 encoding."
   (cffi:foreign-funcall "enchant_broker_get_error"
                         :pointer (address broker)
                         :string))
+
+(defun broker-set-ordering (broker tag ordering)
+  "Declares a preference of providers to use for the language _tag_ (a
+string).
+
+The language tag \"*\" can be used to declare a default ordering. It is
+used by any language that does not explictly declare an ordering. The
+_ordering_ argument is a list of provider name
+strings (e.g., (\"myspell\" \"aspell\" \"ispell\")).
+
+If _broker_ is not an active `broker` object signal `not-active-broker`
+error condition."
+  (error-if-not-active-broker broker)
+  (error-if-not-proper-string tag)
+  (assert (and (consp ordering)
+               (every #'stringp ordering))
+          nil "The ORDERING argument must be a list of strings.")
+  (cffi:foreign-funcall "enchant_broker_set_ordering"
+                        :pointer (address broker)
+                        :string tag
+                        :string (format nil "~{~A~^,~}" ordering)
+                        :void))
 
 ;;; Dicts
 

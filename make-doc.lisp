@@ -116,12 +116,6 @@ freeing operations.
 
 (defparameter *tail*
   "~
-Missing features
-----------------
-
-  - `enchant_broker_set_ordering()`
-
-
 Author and license
 ------------------
 

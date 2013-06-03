@@ -230,6 +230,24 @@ See also `with-pwl-dict` macro which automatically creates a `dict`
 environment and frees it in the end.
 
 
+### Function: `broker-set-ordering`
+
+The lambda list:
+
+     (broker tag ordering)
+
+Declares a preference of providers to use for the language _tag_ (a
+string).
+
+The language tag "*" can be used to declare a default ordering. It is
+used by any language that does not explictly declare an ordering. The
+_ordering_ argument is a list of provider name
+strings (e.g., ("myspell" "aspell" "ispell")).
+
+If _broker_ is not an active `broker` object signal `not-active-broker`
+error condition.
+
+
 ### Class: `dict`
 
 Class for holding pointers to foreign (non-Lisp) dictionary
@@ -425,12 +443,6 @@ end with `broker-free`. Note that the decision about the _broker_
 argument is done at the macro-expansion time. If there is
 anything (except the symbol `nil`) in the place of the _broker_ argument
 that will be used as the broker.
-
-
-Missing features
-----------------
-
-  - `enchant_broker_set_ordering()`
 
 
 Author and license
