@@ -15,7 +15,7 @@
            #:broker #:broker-init #:not-active-broker
            #:broker-free #:with-broker #:broker-describe #:broker-list-dicts
 
-           #:dict #:not-active-dict #:dict-not-found
+           #:dict #:not-active-dict #:dict-not-found #:dict-get-error
            #:broker-request-dict #:broker-request-pwl-dict
            #:broker-free-dict #:dict-check #:broker-dict-exists-p #:with-dict
            #:with-pwl-dict #:dict-suggest
@@ -212,7 +212,8 @@ resources. Instances are created with `broker-request-dict` function."))
     (error 'not-active-dict :string "Not an active DICT object.")))
 
 (defun dict-get-error (dict)
-  "Return error string (or nil) describing the last exception."
+  "Return an error message string (or `nil`) describing the last error
+in the UTF-8 encoding."
   (error-if-not-active-dict dict)
   (cffi:foreign-funcall "enchant_dict_get_error"
                         :pointer (address dict)

@@ -271,6 +271,16 @@ _Dict_ must be an active `dict` object returned by
 `broker-request-dict`, if not, signal a `not-active-dict` condition.
 
 
+### Function: `dict-get-error`
+
+The lambda list:
+
+     (dict)
+
+Return an error message string (or `nil`) describing the last error
+in the UTF-8 encoding.
+
+
 ### Function: `dict-is-added-p`
 
 The lambda list:
