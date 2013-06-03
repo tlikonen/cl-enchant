@@ -62,9 +62,9 @@ boolean."))
   (print-unreadable-object (object stream :type t :identity t)
     (format stream "(~A)" (if (activep object) "ACTIVE" "INACTIVE"))))
 
-(defgeneric free-foreign-resource (object))
+(defgeneric free-foreign-resource (object &key &allow-other-keys))
 
-(defmethod free-foreign-resource :around ((object foreign-object))
+(defmethod free-foreign-resource :around ((object foreign-object) &key)
   (when (activep object)
     (call-next-method)
     (setf (address object) nil)
@@ -114,16 +114,16 @@ and free broker and dictionary resources."
     (when (proper-pointer-p broker)
       (make-instance 'broker :address broker))))
 
-(defmethod free-foreign-resource ((object broker))
-  (when (activep object)
-    (cffi:foreign-funcall "enchant_broker_free" :pointer (address object)
-                          :void)))
+(defmethod free-foreign-resource ((broker broker) &key)
+  (cffi:foreign-funcall "enchant_broker_free"
+                        :pointer (address broker)
+                        :void))
 
 (defun broker-free (broker)
   "Free the foreign (non-Lisp) `broker` resources. The argument is a
 `broker` object returned by `broker-init`. The `broker` object becomes
 \"inactive\" and can't be used anymore."
-    (free-foreign-resource broker))
+  (free-foreign-resource broker))
 
 (defun error-if-not-active-broker (object)
   (unless (and (typep object 'broker)
@@ -311,24 +311,19 @@ environment and frees it in the end."
       (make-instance 'dict :address ptr))))
 
 
-(defmethod free-foreign-resource ((object dict))
-  nil)
+(defmethod free-foreign-resource ((dict dict) &key broker)
+  (cffi:foreign-funcall "enchant_broker_free_dict"
+                        :pointer (address broker)
+                        :pointer (address dict)
+                        :void))
 
 (defun broker-free-dict (broker dict)
   "Free the foreign (non-Lisp) `dict` resources. The first argument is a
 `broker` object returned by `broker-init` and the second a `dict` object
 returned by `broker-request-dict`. The `dict` object becomes
 \"inactive\" and can't be used anymore."
-
-  (when (and (typep broker 'broker)
-             (activep broker)
-             (typep dict 'dict)
-             (activep dict))
-    (cffi:foreign-funcall "enchant_broker_free_dict"
-                          :pointer (address broker)
-                          :pointer (address dict)
-                          :void)
-    (free-foreign-resource dict)))
+  (error-if-not-active-broker broker)
+  (free-foreign-resource dict :broker broker))
 
 (defun dict-check (dict word)
   "Check the spelling of _word_ (string) using dictionary _dict_.
