@@ -27,8 +27,9 @@
 (in-package #:enchant)
 
 (eval-when (:load-toplevel :execute)
-  (with-simple-restart (skip-enchant "Skip loading the Enchant library.")
-    (cffi:load-foreign-library '(:default "libenchant"))))
+  (handler-case (cffi:load-foreign-library '(:default "libenchant"))
+    (cffi:load-foreign-library-error ()
+      (format *error-output* "~&Couldn't load Enchant library.~%"))))
 
 ;;; General
 
