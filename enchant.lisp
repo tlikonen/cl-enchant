@@ -314,9 +314,9 @@ _Dict_ must be an active `dict` object returned by
                                      :int)))
     (cond ((zerop value) word)
           ((plusp value) nil)
-          ((minusp value) (error 'enchant-error
-                                 :string (format nil "Error: ~A"
-                                                 (dict-get-error dict)))))))
+          ((minusp value)
+           (error 'enchant-error
+                  :string (format nil "Error code: ~A" value))))))
 
 (defun dict-suggest (dict word)
   "Request spelling suggestions for _word_ (string) using dictionary _dict_.
