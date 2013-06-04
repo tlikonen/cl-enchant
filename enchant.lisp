@@ -27,11 +27,6 @@
 
 (in-package #:enchant)
 
-(eval-when (:load-toplevel :execute)
-  (handler-case (cffi:load-foreign-library '(:default "libenchant"))
-    (cffi:load-foreign-library-error ()
-      (format *error-output* "~&Couldn't load Enchant library.~%"))))
-
 ;;; General
 
 (defun error-if-not-proper-string (object)
