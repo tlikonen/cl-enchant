@@ -32,7 +32,7 @@ Lisp implementation which supports CFFI.
 Installation
 ------------
 
-[ASDF][] can be used to install CL Enchant. Two ASDF systems are
+[ASDF][] can be used to build and load CL Enchant. Two ASDF systems are
 provided: The system `enchant` loads the main CL Enchant library. There
 is also `enchant-autoload` system which depends on the main library and
 also tries to load the Enchant C library (using CFFI's facilities).
