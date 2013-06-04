@@ -71,6 +71,17 @@ Lisp implementation which supports CFFI.
 [CFFI]:    http://common-lisp.net/project/cffi/
 
 
+Installation
+------------
+
+[ASDF][] can be used to install CL Enchant. Two ASDF systems are
+provided: The system `enchant` loads the main CL Enchant library. There
+is also `enchant-autoload` system which depends on the main library and
+also tries to load the Enchant C library (using CFFI's facilities).
+
+[ASDF]: http://common-lisp.net/project/asdf/
+
+
 Examples
 --------
 
