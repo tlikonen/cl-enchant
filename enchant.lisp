@@ -128,8 +128,9 @@ inactive and can't be used anymore."
 (defun broker-dict-exists-p (broker language)
   "Check if dictionary for _language_ exists. _Broker_ must be a valid
 `broker` object returned by `broker-init`. _Language_ is a language code
-and optional country code as a string (e.g., \"en\", \"en_GB\"). If the
-_language_ exists return the _language_ string. Otherwise return `nil`.
+and optional country code as a string (e.g., `\"en\"`, `\"en_GB\"`). If
+the _language_ exists return the _language_ string. Otherwise return
+`nil`.
 
 If _broker_ is not an active `broker` object, signal `not-active-broker`
 error condition."
@@ -175,8 +176,8 @@ error condition."
 
 (defun broker-list-dicts (broker)
   "List all dictionaries that are available. Return a list of lists with
-four strings: language and optional country code (e.g., \"en\" or
-\"en_GB\"), provider name, provider description and provider library
+four strings: language and optional country code (e.g., `\"en\"` or
+`\"en_GB\"`), provider name, provider description and provider library
 filename.
 
 If _broker_ is not an active `broker` object, signal `not-active-broker`
@@ -202,10 +203,10 @@ in the UTF-8 encoding. This can be called after `broker` operations."
 (defun broker-set-ordering (broker language ordering)
   "Declares a preference of providers to use for _language_.
 The _language_ argument is a language code and optional country
-code (e.g., \"en\" or \"en_GB\"). Pseudo language \"*\" can be used to
-declare a default ordering. It is used by any language that does not
-explicitly declare an ordering. The _ordering_ argument is a list of
-provider name strings (e.g., (\"myspell\" \"aspell\" \"ispell\")).
+code (e.g., `\"en\"` or `\"en_GB\"`). Pseudo language `\"*\"` can be
+used to declare a default ordering. It is used by any language that does
+not explicitly declare an ordering. The _ordering_ argument is a list of
+provider name strings (e.g., `(\"myspell\" \"aspell\" \"ispell\")`).
 
 If _broker_ is not an active `broker` object, signal `not-active-broker`
 error condition."
@@ -249,7 +250,7 @@ can be used with spell-checker operations etc.
 
 The _broker_ argument must be an active `broker` object created with
 `broker-init`. _Language_ is a language code and optional country code
-as a string (e.g., \"en\" or \"en_GB\").
+as a string (e.g., `\"en\"` or `\"en_GB\"`).
 
 A `dict` object is active when it has been successfully created. It
 allocates foreign (non-Lisp) resources and must be freed after use with
@@ -281,8 +282,8 @@ Return a `dict` object which can be used with spell-checker operations.
 
 The _broker_ argument must be an active `broker` object created with
 `broker-init`. Personal word list file _pwl_ is a text file with one
-entry (e.g., a word) per line. If the file does not exist it is created.
-New words can be added to the personal word list file with function
+entry (a word) per line. If the file does not exist it is created. New
+words can be added to the personal word list file with function
 `dict-add`.
 
 A `dict` object is active when it has been successfully created. It
@@ -378,14 +379,14 @@ that will be used as the broker.
 
 Examples:
 
-        ENCHANT> (with-dict (lang \"en_GB\")
-                   (dict-check lang \"working\"))
-        \"working\"
+    ENCHANT> (with-dict (lang \"en_GB\")
+               (dict-check lang \"working\"))
+    \"working\"
 
-        ENCHANT> (with-dict (lang \"en_GB\")
-                   (dict-suggest lang \"wrking\"))
-        (\"wring\" \"working\" \"irking\" \"waking\" \"wrecking\" \"winking\"
-         \"wrinkling\" \"marking\" \"Wrekin\" \"raking\")"
+    ENCHANT> (with-dict (lang \"en_GB\")
+               (dict-suggest lang \"wrking\"))
+    (\"wring\" \"working\" \"irking\" \"waking\" \"wrecking\" \"winking\"
+     \"wrinkling\" \"marking\" \"Wrekin\" \"raking\")"
 
   (let* ((brokersym (gensym "BROKER"))
          (dictsym (gensym "DICT"))
@@ -399,7 +400,7 @@ Examples:
         `(with-broker ,brokersym ,code))))
 
 (defmacro with-pwl-dict ((variable pwl &optional broker) &body body)
-    "Request a new `dict` object for personal word list file _pwl_.
+  "Request a new `dict` object for personal word list file _pwl_.
 Lexically bind _variable_ to the new `dict` object and execute all
 _body_ forms. Return the values of the last _body_ form. Finally, free
 the `dict` resources with function `broker-free-dict`.
@@ -516,7 +517,7 @@ list."
 
 (defun dict-describe (dict)
   "Describe dictionary _dict_. Return a list of four strings: language
-code and optional country code (e.g., \"en\" or \"en_GB\"), provider
+code and optional country code (e.g., `\"en\"` or `\"en_GB\"`), provider
 name, provider description and provider library filename.
 
 _Dict_ must be an active `dict` object returned by

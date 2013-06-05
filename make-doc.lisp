@@ -104,8 +104,8 @@ Get spelling suggestions for _word_ using dictionary _dict_.
 
     ENCHANT> (with-dict (lang \"en_US\")
                (dict-suggest lang \"wrking\"))
-    (\"wring\" \"working\" \"irking\" \"waking\" \"wrying\" \"parking\" \"marking\" \"winking\"
-     \"wicking\" \"Zworykin\" \"dragging\")
+    (\"wring\" \"working\" \"irking\" \"waking\" \"wrying\" \"parking\"
+     \"marking\" \"winking\" \"wicking\" \"Zworykin\" \"dragging\")
 
 
 Interface (API)
