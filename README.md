@@ -134,7 +134,7 @@ The lambda list:
 
 Free the foreign (non-Lisp) `broker` resources. The argument is a
 `broker` object returned by `broker-init`. The `broker` object becomes
-"inactive" and can't be used anymore.
+inactive and can't be used anymore.
 
 
 ### Function: `broker-free-dict`
@@ -145,8 +145,8 @@ The lambda list:
 
 Free the foreign (non-Lisp) `dict` resources. The first argument is a
 `broker` object returned by `broker-init` and the second a `dict` object
-returned by `broker-request-dict`. The `dict` object becomes
-"inactive" and can't be used anymore.
+returned by `broker-request-dict`. The `dict` object becomes inactive
+and can't be used anymore.
 
 
 ### Function: `broker-get-error`
@@ -164,11 +164,11 @@ in the UTF-8 encoding. This can be called after `broker` operations.
 Initialize a new broker. Return a `broker` object which can be used
 to request dictionaries etc. See function `broker-request-dict`.
 
-A `broker` object is "active" when it has been successfully created.
-It allocates foreign (non-Lisp) resources and must be freed after use
-with function `broker-free`. After being freed it becomes "inactive"
-and thus unusable. Generic function `activep` can be used to test if a
-`broker` object is active or not.
+A `broker` object is active when it has been successfully created. It
+allocates foreign (non-Lisp) resources and must be freed after use with
+function `broker-free`. After being freed it becomes inactive and thus
+unusable. Generic function `activep` can be used to test if a `broker`
+object is active or not.
 
 See macros `with-broker`, `with-dict` and `with-pwl-dict` which
 automatically initialize and free broker and dictionary resources.
@@ -202,11 +202,11 @@ The _broker_ argument must be an active `broker` object created with
 `broker-init`. _Language_ is a language code and optional country code
 as a string (e.g., "en" or "en_GB").
 
-A `dict` object is "active" when it has been successfully created. It
+A `dict` object is active when it has been successfully created. It
 allocates foreign (non-Lisp) resources and must be freed after use with
-function `broker-free-dict`. After being freed it becomes "inactive"
-and thus unusable. Generic function `activep` can be used to test if
-`dict` object is active or not.
+function `broker-free-dict`. After being freed it becomes inactive and
+thus unusable. Generic function `activep` can be used to test if `dict`
+object is active or not.
 
 If no suitable dictionary could be found `dict-not-found` error
 condition is signaled.
@@ -230,11 +230,11 @@ entry (e.g., a word) per line. If the file does not exist it is created.
 New words can be added to the personal word list file with function
 `dict-add`.
 
-A `dict` object is "active" when it has been successfully created. It
+A `dict` object is active when it has been successfully created. It
 allocates foreign (non-Lisp) resources and must be freed after use with
-function `broker-free-dict`. After being freed it becomes "inactive"
-and thus unusable. Generic function `activep` can be used to test if
-`dict` object is active or not.
+function `broker-free-dict`. After being freed it becomes inactive and
+thus unusable. Generic function `activep` can be used to test if `dict`
+object is active or not.
 
 See also `with-pwl-dict` macro which automatically creates a `dict`
 environment and frees it in the end.
