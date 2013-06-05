@@ -94,16 +94,16 @@ Instances are created with `broker-init` function."))
 
 (defun broker-init ()
   "Initialize a new broker. Return a `broker` object which can be used
-to request dictionares etc. See function `broker-request-dict`.
+to request dictionaries etc. See function `broker-request-dict`.
 
-A `broker` object is \"active\" when it has been succesfully created. It
-allocates foreign (non-Lisp) resources and must be freed after use with
-function `broker-free`. After being freed it becomes \"inactive\" and
-thus unusable. Generic function `activep` can be used to test if a
+A `broker` object is \"active\" when it has been successfully created.
+It allocates foreign (non-Lisp) resources and must be freed after use
+with function `broker-free`. After being freed it becomes \"inactive\"
+and thus unusable. Generic function `activep` can be used to test if a
 `broker` object is active or not.
 
-See macros `with-broker` and `with-dict` which automatically initialize
-and free broker and dictionary resources."
+See macros `with-broker`, `with-dict` and `with-pwl-dict` which
+automatically initialize and free broker and dictionary resources."
 
   (let ((broker (cffi:foreign-funcall "enchant_broker_init" :pointer)))
     (when (proper-pointer-p broker)
@@ -126,14 +126,12 @@ and free broker and dictionary resources."
     (error 'not-active-broker :string "Not an active BROKER object.")))
 
 (defun broker-dict-exists-p (broker language)
-  "Check if _language_ exists. _Broker_ must be a valid `broker` object
-returned by `broker-init`. _Language_ is a language code and optional
-country code as a string (e.g., \"fi\", \"en_GB\").
+  "Check if dictionary for _language_ exists. _Broker_ must be a valid
+`broker` object returned by `broker-init`. _Language_ is a language code
+and optional country code as a string (e.g., \"en\", \"en_GB\"). If the
+_language_ exists return the _language_ string. Otherwise return `nil`.
 
-If the _language_ exists return the _language_ string. Otherwise return
-`nil`.
-
-If _broker_ is not an active `broker` object signal `not-active-broker`
+If _broker_ is not an active `broker` object, signal `not-active-broker`
 error condition."
 
   (error-if-not-active-broker broker)
@@ -146,10 +144,10 @@ error condition."
     (1 language)))
 
 (defmacro with-broker (variable &body body)
-  "Initialize a new `broker` (using `broker-init`) and bind _variable_
-to the `broker` object. Execute all _body_ forms and return the values
-of the last _body_ form. Finally, free the `broker` resources with
-function `broker-free`."
+  "Initialize a new `broker` (using `broker-init`) and lexically bind
+_variable_ to the `broker` object. Execute all _body_ forms and return
+the values of the last _body_ form. Finally, free the `broker` resources
+with function `broker-free`."
 
   (let ((broker (gensym "BROKER")))
     `(let* ((,broker (broker-init))
@@ -159,11 +157,11 @@ function `broker-free`."
          (broker-free ,broker)))))
 
 (defun broker-describe (broker)
-  "Get information about Enchant providers. Return a list of lists of
-three strings: provider name, provider description, provider library
-filename.
+  "Get information about Enchant dictionary providers. Return a list of
+lists of three strings: provider name, provider description, provider
+library filename.
 
-If _broker_ is not an active `broker` object signal `not-active-broker`
+If _broker_ is not an active `broker` object, signal `not-active-broker`
 error condition."
 
   (error-if-not-active-broker broker)
@@ -177,10 +175,11 @@ error condition."
 
 (defun broker-list-dicts (broker)
   "List all dictionaries that are available. Return a list of lists with
-four strings: language tag, provider name, provider description and
-provider library filename.
+four strings: language and optional country code (e.g., \"en\" or
+\"en_GB\"), provider name, provider description and provider library
+filename.
 
-If _broker_ is not an active `broker` object signal `not-active-broker`
+If _broker_ is not an active `broker` object, signal `not-active-broker`
 error condition."
 
   (error-if-not-active-broker broker)
@@ -194,31 +193,30 @@ error condition."
 
 (defun broker-get-error (broker)
   "Return an error message string (or `nil`) describing the last error
-in the UTF-8 encoding."
+in the UTF-8 encoding. This can be called after `broker` operations."
   (error-if-not-active-broker broker)
   (cffi:foreign-funcall "enchant_broker_get_error"
                         :pointer (address broker)
                         :string))
 
-(defun broker-set-ordering (broker tag ordering)
-  "Declares a preference of providers to use for the language _tag_ (a
-string).
+(defun broker-set-ordering (broker language ordering)
+  "Declares a preference of providers to use for _language_.
+The _language_ argument is a language code and optional country
+code (e.g., \"en\" or \"en_GB\"). Pseudo language \"*\" can be used to
+declare a default ordering. It is used by any language that does not
+explicitly declare an ordering. The _ordering_ argument is a list of
+provider name strings (e.g., (\"myspell\" \"aspell\" \"ispell\")).
 
-The language tag \"*\" can be used to declare a default ordering. It is
-used by any language that does not explictly declare an ordering. The
-_ordering_ argument is a list of provider name
-strings (e.g., (\"myspell\" \"aspell\" \"ispell\")).
-
-If _broker_ is not an active `broker` object signal `not-active-broker`
+If _broker_ is not an active `broker` object, signal `not-active-broker`
 error condition."
   (error-if-not-active-broker broker)
-  (error-if-not-proper-string tag)
+  (error-if-not-proper-string language)
   (assert (and (consp ordering)
                (every #'stringp ordering))
           nil "The ORDERING argument must be a list of strings.")
   (cffi:foreign-funcall "enchant_broker_set_ordering"
                         :pointer (address broker)
-                        :string tag
+                        :string language
                         :string (format nil "~{~A~^,~}" ordering)
                         :void))
 
@@ -239,7 +237,7 @@ resources. Instances are created with `broker-request-dict` function."))
 
 (defun dict-get-error (dict)
   "Return an error message string (or `nil`) describing the last error
-in the UTF-8 encoding."
+in the UTF-8 encoding. This can be called after `dict` operations."
   (error-if-not-active-dict dict)
   (cffi:foreign-funcall "enchant_dict_get_error"
                         :pointer (address dict)
@@ -247,20 +245,20 @@ in the UTF-8 encoding."
 
 (defun broker-request-dict (broker language)
   "Request a new dictionary for _language_. Return a `dict` object which
-can be used with spell-checker operations.
+can be used with spell-checker operations etc.
 
 The _broker_ argument must be an active `broker` object created with
 `broker-init`. _Language_ is a language code and optional country code
-as a string (e.g., \"fi\", \"en_GB\").
+as a string (e.g., \"en\" or \"en_GB\").
 
-A `dict` object is \"active\" when it has been succesfully created. It
+A `dict` object is \"active\" when it has been successfully created. It
 allocates foreign (non-Lisp) resources and must be freed after use with
 function `broker-free-dict`. After being freed it becomes \"inactive\"
 and thus unusable. Generic function `activep` can be used to test if
 `dict` object is active or not.
 
 If no suitable dictionary could be found `dict-not-found` error
-condition is signalled.
+condition is signaled.
 
 See also `with-dict` macro which automatically creates a `dict`
 environment and frees it in the end."
@@ -278,16 +276,16 @@ environment and frees it in the end."
 
 
 (defun broker-request-pwl-dict (broker pwl)
-  "Request a new dictionary for personal wordlist file _pwl_ (a filename string).
+  "Request a new dictionary for personal word list file _pwl_ (a filename string).
 Return a `dict` object which can be used with spell-checker operations.
 
 The _broker_ argument must be an active `broker` object created with
-`broker-init`. Personal wordlist file _pwl_ is a text file with one
+`broker-init`. Personal word list file _pwl_ is a text file with one
 entry (e.g., a word) per line. If the file does not exist it is created.
-New words can be added to the personal wordlist file with function
+New words can be added to the personal word list file with function
 `dict-add`.
 
-A `dict` object is \"active\" when it has been succesfully created. It
+A `dict` object is \"active\" when it has been successfully created. It
 allocates foreign (non-Lisp) resources and must be freed after use with
 function `broker-free-dict`. After being freed it becomes \"inactive\"
 and thus unusable. Generic function `activep` can be used to test if
@@ -322,7 +320,7 @@ returned by `broker-request-dict`. The `dict` object becomes
 
 (defun dict-check (dict word)
   "Check the spelling of _word_ (string) using dictionary _dict_.
-Return _word_ if the spelling is correct, `nil` otherwise.
+Return the _word_ if the spelling is correct, `nil` otherwise.
 
 _Dict_ must be an active `dict` object returned by
 `broker-request-dict`, if not, signal a `not-active-dict` condition."
@@ -342,7 +340,7 @@ _Dict_ must be an active `dict` object returned by
 
 (defun dict-suggest (dict word)
   "Request spelling suggestions for _word_ (string) using dictionary _dict_.
-Return a list of suggestions (strings) or nil if there aren't any.
+Return a list of suggestions (strings) or `nil` if there aren't any.
 
 _Dict_ must be an active `dict` object returned by
 `broker-request-dict`, if not, signal `not-active-dict` condition."
@@ -365,10 +363,10 @@ _Dict_ must be an active `dict` object returned by
                                 :void))))))
 
 (defmacro with-dict ((variable language &optional broker) &body body)
-  "Request a new dictionary object for _language_. Bind _variable_ to
-the new `dict` object and execute all _body_ forms. Return the values of
-the last _body_ form. Finally, free the `dict` resources with function
-`broker-free-dict`.
+  "Request a new `dict` object for _language_. Lexically bind _variable_
+to the new `dict` object and execute all _body_ forms. Return the values
+of the last _body_ form. Finally, free the `dict` resources with
+function `broker-free-dict`.
 
 If the optional _broker_ argument is given reuse that broker object when
 requesting `dict`. If the _broker_ argument is not given create
@@ -380,14 +378,14 @@ that will be used as the broker.
 
 Examples:
 
-    ENCHANT> (with-dict (lang \"fi\")
-               (dict-check lang \"toimii\"))
-    \"toimii\"
+        ENCHANT> (with-dict (lang \"en_GB\")
+                   (dict-check lang \"working\"))
+        \"working\"
 
-    ENCHANT> (with-broker b
-               (with-dict (lang \"fi\" b)
-                 (dict-suggest lang \"tomii\")))
-    (\"omii\" \"Tomi\" \"toimi\" \"toimii\" \"Tomisi\")"
+        ENCHANT> (with-dict (lang \"en_GB\")
+                   (dict-suggest lang \"wrking\"))
+        (\"wring\" \"working\" \"irking\" \"waking\" \"wrecking\" \"winking\"
+         \"wrinkling\" \"marking\" \"Wrekin\" \"raking\")"
 
   (let* ((brokersym (gensym "BROKER"))
          (dictsym (gensym "DICT"))
@@ -401,13 +399,13 @@ Examples:
         `(with-broker ,brokersym ,code))))
 
 (defmacro with-pwl-dict ((variable pwl &optional broker) &body body)
-    "Request a new dictionary object for personal wordlist file _pwl_.
-Bind _variable_ to the new `dict` object and execute all _body_ forms.
-Return the values of the last _body_ form. Finally, free the `dict`
-resources with function `broker-free-dict`.
+    "Request a new `dict` object for personal word list file _pwl_.
+Lexically bind _variable_ to the new `dict` object and execute all
+_body_ forms. Return the values of the last _body_ form. Finally, free
+the `dict` resources with function `broker-free-dict`.
 
-For more information on personal wordlist files see the documentation of
-function `broker-request-pwl-dict`.
+For more information on personal word list files see the documentation
+of function `broker-request-pwl-dict`.
 
 If the optional _broker_ argument is given reuse that broker object when
 requesting `dict`. If the _broker_ argument is not given create
@@ -431,8 +429,7 @@ that will be used as the broker."
 
 (defun dict-add (dict word)
   "Add _word_ to user's personal dictionary _dict_. If the _word_ exists
-in the exclude dictionary, remove it first."
-
+in user's exclude dictionary also remove it from there."
   (error-if-not-active-dict dict)
   (error-if-not-proper-string word)
   (cffi:foreign-funcall "enchant_dict_add"
@@ -442,7 +439,8 @@ in the exclude dictionary, remove it first."
                         :void))
 
 (defun dict-add-to-session (dict word)
-  "Add _word_ to the current spell-checking session _dict_."
+  "Add _word_ to the current spell-checking session _dict_. _Word_ is
+then recognized as a correct word in the current session."
   (error-if-not-active-dict dict)
   (error-if-not-proper-string word)
   (cffi:foreign-funcall "enchant_dict_add_to_session"
@@ -452,9 +450,11 @@ in the exclude dictionary, remove it first."
                         :void))
 
 (defun dict-is-added-p (dict word)
-  "Return _word_ if the _word_ has been added to user's personal
-dictionary or to the current spell-checking session _dict_. Otherwise
-return `nil`."
+  "Check if _word_ has been added to user's personal dictionary or to
+the current spell-checking session _dict_. If true, return _word_.
+Otherwise return `nil`.
+
+Functions for adding words are `dict-add` and `dict-add-to-session`."
   (error-if-not-active-dict dict)
   (error-if-not-proper-string word)
   (case (cffi:foreign-funcall "enchant_dict_is_added"
@@ -466,8 +466,8 @@ return `nil`."
     (0 nil)))
 
 (defun dict-remove (dict word)
-  "Add _word_ to the exclude dictionary for _dict_ and remove it from
-user's personal dictionary."
+  "Add _word_ to user's exclude dictionary for _dict_. If the _word_
+exists in user's personal dictionary also remove it from there."
   (error-if-not-active-dict dict)
   (error-if-not-proper-string word)
   (cffi:foreign-funcall "enchant_dict_remove"
@@ -477,7 +477,8 @@ user's personal dictionary."
                         :void))
 
 (defun dict-remove-from-session (dict word)
-  "Remove _word_ from the current spell-checking session _dict_."
+  "Remove _word_ from the current spell-checking session _dict_.
+The _word_ is not recognized anymore in the current session."
   (error-if-not-active-dict dict)
   (error-if-not-proper-string word)
   (cffi:foreign-funcall "enchant_dict_remove_from_session"
@@ -487,9 +488,9 @@ user's personal dictionary."
                         :void))
 
 (defun dict-is-removed-p (dict word)
-  "Return _word_ if the _word_ has been removed from the user's personal
-dictionary or from the current spell-checking session _dict_. Otherwise
-return `nil`."
+  "Check if _word_ has been removed from user's personal dictionary or
+from the current spell-checking session _dict_. If true, return _word_.
+Otherwise return `nil`."
   (error-if-not-active-dict dict)
   (error-if-not-proper-string word)
   (case (cffi:foreign-funcall "enchant_dict_is_removed"
@@ -515,7 +516,8 @@ list."
 
 (defun dict-describe (dict)
   "Describe dictionary _dict_. Return a list of four strings: language
-tag, provider name, provider description and provider library filename.
+code and optional country code (e.g., \"en\" or \"en_GB\"), provider
+name, provider description and provider library filename.
 
 _Dict_ must be an active `dict` object returned by
 `broker-request-dict`, if not, signal a `not-active-dict` condition."
