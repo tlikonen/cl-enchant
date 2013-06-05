@@ -88,7 +88,7 @@ The lambda list:
      (object)
 
 Test if _object_ is active. Return a generalized
-boolean.
+boolean. This can be used with `broker` and `dict` objects.
 
 
 ### Class: `broker`

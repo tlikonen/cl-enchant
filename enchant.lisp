@@ -48,7 +48,7 @@
 
 (defgeneric activep (object)
   (:documentation "Test if _object_ is active. Return a generalized
-boolean."))
+boolean. This can be used with `broker` and `dict` objects."))
 
 (defmethod activep ((object foreign-object))
   (proper-pointer-p (address object)))
