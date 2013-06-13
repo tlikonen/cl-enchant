@@ -69,7 +69,7 @@ Get spelling suggestions for _word_ using dictionary _dict_.
 Interface (API)
 ---------------
 
-CL Enchant uses similar names as the original Enchant C library. Common
+CL Enchant uses similar names to the original Enchant C library. Common
 Lisp's naming conventions are respected, though. For example, the
 original C language function `enchant_dict_check()` has been named
 `enchant:dict-check`. The C function `enchant_broker_dict_exists()` has
