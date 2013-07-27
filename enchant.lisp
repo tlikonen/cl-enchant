@@ -10,7 +10,7 @@
 
 (defpackage #:enchant
   (:use #:cl)
-  (:export #:get-version #:enchant-error #:activep
+  (:export #:get-version #:enchant-error #:error-string #:activep
 
            #:broker #:broker-init #:not-active-broker #:broker-get-error
            #:broker-free #:with-broker #:broker-describe #:broker-list-dicts
@@ -35,9 +35,9 @@
           nil "The argument must be a non-empty string."))
 
 (define-condition enchant-error (error)
-  ((error-string :initarg :string))
+  ((error-string :initarg :string :reader error-string))
   (:report (lambda (condition stream)
-             (format stream "~A" (slot-value condition 'error-string)))))
+             (format stream "~A" (error-string condition)))))
 
 (defclass foreign-object ()
   ((address :initarg :address :accessor address)))
