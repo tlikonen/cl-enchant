@@ -1,6 +1,6 @@
-(defsystem :enchant
-  :description "Bindings for Enchant spell-checker library"
+(defsystem "enchant"
+  :description "Programming interface for Enchant spell-checker library"
   :author "Teemu Likonen <tlikonen@iki.fi>"
-  :licence "Public Domain"
-  :depends-on (:cffi)
+  :licence "Creative Commons CC0 (public domain dedication)"
+  :depends-on ("cffi")
   :components ((:file "enchant")))

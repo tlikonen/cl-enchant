@@ -1,6 +1,6 @@
-(defsystem :enchant-autoload
-  :description "Bindings for Enchant spell-checker library (autoload Enchant)"
+(defsystem "enchant-autoload"
+  :description "Programming interface for Enchant spell-checker library (autoload Enchant)"
   :author "Teemu Likonen <tlikonen@iki.fi>"
-  :licence "Public Domain"
-  :depends-on (:enchant)
+  :licence "Creative Commons CC0 (public domain dedication)"
+  :depends-on ("enchant")
   :components ((:file "load-enchant")))

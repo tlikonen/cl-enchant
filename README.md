@@ -68,8 +68,8 @@ Get spelling suggestions for _word_ using dictionary _dict_.
      "marking" "winking" "wicking" "Zworykin" "dragging")
 
 
-Interface (API)
----------------
+The Programming Interface
+-------------------------
 
 CL Enchant uses similar names to the original Enchant C library. Common
 Lisp's naming conventions are respected, though. For example, the
@@ -462,17 +462,17 @@ anything (except the symbol `nil`) in the place of the _broker_ argument
 that will be used as the broker.
 
 
-Author and license
-------------------
+License and Source Code
+-----------------------
 
 Author:  Teemu Likonen <<tlikonen@iki.fi>>
 
 PGP: [4E10 55DC 84E9 DFF6 13D7 8557 719D 69D3 2453 9450][PGP]
 
-License: Public domain
+License: [Creative Commons CC0][CC0] (public domain dedication)
 
-This program is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+The source code repository:
+<https://github.com/tlikonen/cl-enchant>
 
 [PGP]: http://www.iki.fi/tlikonen/pgp-key.asc
+[CC0]: https://creativecommons.org/publicdomain/zero/1.0/legalcode
