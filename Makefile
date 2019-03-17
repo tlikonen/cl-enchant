@@ -1,2 +1,2 @@
-README.md: enchant.lisp make-doc.lisp
-	sbcl --script make-doc.lisp >$@
+README.md: enchant.lisp readme.lisp print-doc.lisp
+	sbcl --script readme.lisp >$@

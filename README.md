@@ -98,6 +98,18 @@ There are also macros for convenience: `with-broker`, `with-dict` and
 freeing operations.
 
 
+### Class: `broker`
+
+Class for holding pointers to foreign (non-Lisp) broker resources.
+Instances are created with `broker-init` function.
+
+
+### Class: `dict`
+
+Class for holding pointers to foreign (non-Lisp) dictionary
+resources. Instances are created with `broker-request-dict` function.
+
+
 ### Function: `activep`
 
 The lambda list:
@@ -106,12 +118,6 @@ The lambda list:
 
 Test if _object_ is active. Return a generalized
 boolean. This can be used with `broker` and `dict` objects.
-
-
-### Class: `broker`
-
-Class for holding pointers to foreign (non-Lisp) broker resources.
-Instances are created with `broker-init` function.
 
 
 ### Function: `broker-describe`
@@ -273,12 +279,6 @@ provider name strings (e.g., `("myspell" "aspell" "ispell")`).
 
 If _broker_ is not an active `broker` object, signal `not-active-broker`
 error condition.
-
-
-### Class: `dict`
-
-Class for holding pointers to foreign (non-Lisp) dictionary
-resources. Instances are created with `broker-request-dict` function.
 
 
 ### Function: `dict-add`
