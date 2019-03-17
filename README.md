@@ -1,16 +1,16 @@
-CL Enchant
-==========
+Enchant
+=======
 
-**Common Lisp interface for Enchant spell-checker library**
+**Common Lisp programming interface for Enchant spell-checker library**
 
 
 Introduction
 ------------
 
-CL Enchant is a Common Lisp interface for the [Enchant][] spell-checker
-library. Enchant is a generic spell-checker library which uses other
-spell-checkers transparently as back-end. Enchant supports the following
-checkers:
+Enchant is a Common Lisp interface for the [Enchant][] spell-checker
+library. The Enchant library is a generic spell-checker library which
+uses other spell-checkers transparently as back-end. The library
+supports the following checkers:
 
   - Aspell/Pspell
   - Ispell
@@ -21,9 +21,10 @@ checkers:
   - Voikko (Finnish)
   - AppleSpell (Mac OSX)
 
-CL Enchant uses [The Common Foreign Function Interface][CFFI] (CFFI) for
-accessing the Enchant C library. CL Enchant should work on any Common
-Lisp implementation which supports CFFI.
+This Common Lisp Enchant package uses [The Common Foreign Function
+Interface][CFFI] (CFFI) for accessing the Enchant C library. This
+package should work on any Common Lisp implementation which supports
+CFFI.
 
 [Enchant]: http://www.abisource.com/projects/enchant/
 [CFFI]:    http://common-lisp.net/project/cffi/
@@ -32,8 +33,8 @@ Lisp implementation which supports CFFI.
 Installation
 ------------
 
-[Quicklisp][QL] is the easiest way to install and load CL Enchant. Two
-[ASDF][] systems are provided: The system `enchant` loads the main CL
+[Quicklisp][QL] is the easiest way to install and load Enchant. Two
+[ASDF][] systems are provided: The system `enchant` loads the main
 Enchant library. There is also `enchant-autoload` system which depends
 on the main library and also tries to load the Enchant C library (using
 CFFI's facilities).
@@ -71,8 +72,8 @@ Get spelling suggestions for _word_ using dictionary _dict_.
 The Programming Interface
 -------------------------
 
-CL Enchant uses similar names to the original Enchant C library. Common
-Lisp's naming conventions are respected, though. For example, the
+Enchant package uses similar names to the original Enchant C library.
+Common Lisp's naming conventions are respected, though. For example, the
 original C language function `enchant_dict_check()` has been named
 `enchant:dict-check`. The C function `enchant_broker_dict_exists()` has
 been named `enchant:broker-dict-exists-p` and thus respecting the Common
