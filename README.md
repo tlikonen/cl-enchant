@@ -69,6 +69,22 @@ Get spelling suggestions for _word_ using dictionary _dict_.
      "marking" "winking" "wicking" "Zworykin" "dragging")
 
 
+License and Source Code
+-----------------------
+
+Author:  Teemu Likonen <<tlikonen@iki.fi>>
+
+PGP: [4E10 55DC 84E9 DFF6 13D7 8557 719D 69D3 2453 9450][PGP]
+
+License: [Creative Commons CC0][CC0] (public domain dedication)
+
+The source code repository:
+<https://github.com/tlikonen/cl-enchant>
+
+[PGP]: http://www.iki.fi/tlikonen/pgp-key.asc
+[CC0]: https://creativecommons.org/publicdomain/zero/1.0/legalcode
+
+
 The Programming Interface
 -------------------------
 
@@ -463,17 +479,3 @@ anything (except the symbol `nil`) in the place of the _broker_ argument
 that will be used as the broker.
 
 
-License and Source Code
------------------------
-
-Author:  Teemu Likonen <<tlikonen@iki.fi>>
-
-PGP: [4E10 55DC 84E9 DFF6 13D7 8557 719D 69D3 2453 9450][PGP]
-
-License: [Creative Commons CC0][CC0] (public domain dedication)
-
-The source code repository:
-<https://github.com/tlikonen/cl-enchant>
-
-[PGP]: http://www.iki.fi/tlikonen/pgp-key.asc
-[CC0]: https://creativecommons.org/publicdomain/zero/1.0/legalcode
