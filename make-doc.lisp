@@ -54,14 +54,12 @@ library. The Enchant library is a generic spell-checker library which
 uses other spell-checkers transparently as back-end. The library
 supports the following checkers:
 
-  - Aspell/Pspell
-  - Ispell
-  - MySpell/Hunspell
-  - Uspell (Yiddish, Hebrew and Eastern European languages)
-  - Hspell (Hebrew)
-  - Zemberek (Turkish)
-  - Voikko (Finnish)
-  - AppleSpell (Mac OSX)
+  - Hunspell
+  - GNU Aspell
+  - Hspell
+  - Voikko
+  - Apple Spell
+  - Zemberek
 
 This Common Lisp Enchant package uses [The Common Foreign Function
 Interface][CFFI] (CFFI) for accessing the Enchant C library. This
