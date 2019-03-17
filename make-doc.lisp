@@ -68,7 +68,7 @@ Interface][CFFI] (CFFI) for accessing the Enchant C library. This
 package should work on any Common Lisp implementation which supports
 CFFI.
 
-[Enchant]: http://www.abisource.com/projects/enchant/
+[Enchant]: https://abiword.github.io/enchant/
 [CFFI]:    http://common-lisp.net/project/cffi/
 
 
