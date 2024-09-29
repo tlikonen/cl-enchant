@@ -102,12 +102,8 @@ freeing operations.
 
 ")
 
-(load "~/quicklisp/setup.lisp")
-
-(asdf:initialize-source-registry
- (list :source-registry
-       :ignore-inherited-configuration
-       (list :directory *default-pathname-defaults*)))
+(load "asdf.conf")
+(load "quicklisp/setup.lisp")
 
 (ql:quickload "enchant" :silent t)
 (load "print-doc.lisp")
