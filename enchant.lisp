@@ -24,6 +24,12 @@
 
 (in-package #:enchant)
 
+(eval-when (:load-toplevel :execute)
+  (with-simple-restart (skip-load-enchant "Skip loading Enchant C library.")
+    (cffi:load-foreign-library '(:or
+                                 (:default "libenchant-2")
+                                 (:default "libenchant")))))
+
 ;;; General
 
 (defun error-if-not-proper-string (object)

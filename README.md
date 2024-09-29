@@ -31,13 +31,11 @@ CFFI.
 Installation
 ------------
 
-[Quicklisp][QL] is the easiest way to install and load Enchant. Two
-[ASDF][] systems are provided: The system `enchant` loads the main
-Enchant library. There is also `enchant-autoload` system which depends
-on the main library and also tries to load the Enchant C library (using
-CFFI's facilities).
+[Quicklisp][QL] is the easiest way to install and load Enchant. There is
+one [ASDF][] system `enchant` which also loads the Enchant C library
+using CFFI's facilities.
 
-[QL]:   http://www.quicklisp.org/
+[QL]:   https://www.quicklisp.org/
 [ASDF]: https://asdf.common-lisp.dev/
 
 
